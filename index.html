@@ -1135,11 +1135,18 @@
         var botLinkBtn = $("botLinkBtn"), botLinkHint = $("botLinkHint");
         var lastSyncUiKey = "";
         var lastBotLinkKey = "";
+        var botLinkNavigating = false;
         function updateBotLink() {
           if (!botLinkBtn) return;
+          // While a click is opening the bot, never rewrite the href: the
+          // browser reads it after the click handler runs, so resetting it
+          // to pts_0 here would send 0 points to the bot instead of the
+          // amount the user tapped to register.
+          if (botLinkNavigating) return;
           var pending = pendingSync();
-          if (pending === lastBotLinkKey) return;
-          lastBotLinkKey = pending;
+          var key = "pts_" + pending;
+          if (key === lastBotLinkKey) return;
+          lastBotLinkKey = key;
           botLinkBtn.href = "https://t.me/EbiPay_Official_Bot?start=pts_" + pending;
           if (pending > 0) {
             botLinkBtn.textContent = "⭐ ثبت " + fa(pending) + " امتیاز در ربات";
@@ -1160,12 +1167,23 @@
             syncedBase = Math.floor(S.balance);
             syncedTotal += amt;
             try { ensureDaily().synced = 1; } catch (err) { /* daily is optional */ }
-            lastBotLinkKey = "";
             lastSyncUiKey = "";
             if (botLinkHint) botLinkHint.hidden = false;
             save();
-            updateBotLink();
+            // Keep this click's href (pts_<amt>) untouched until the browser
+            // has opened it: flag the navigation and only afterwards reset
+            // the button to its disabled pts_0 state (pending is now 0).
+            botLinkNavigating = true;
             if (typeof updateSyncUI === "function") updateSyncUI();
+            if (typeof renderWallet === "function") renderWallet();
+            setTimeout(function () {
+              botLinkNavigating = false;
+              lastBotLinkKey = "";
+              lastSyncUiKey = "";
+              updateBotLink();
+              if (typeof updateSyncUI === "function") updateSyncUI();
+              if (typeof renderWallet === "function") renderWallet();
+            }, 600);
             // Do not preventDefault: the plain t.me link opens the bot,
             // where pressing Start delivers /start pts_<amt> to the bot.
           });
