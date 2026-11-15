@@ -1,0 +1,1977 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>مزرعه Sheep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) { min-height: 2.25rem; }
+
+      :root {
+        --bg: #eef4e6;
+        --bg-deep: #ddebd2;
+        --panel: #fffef8;
+        --panel-2: #f2f6ea;
+        --ink: #20302a;
+        --ink-soft: #5f7268;
+        --line: #d3dfc6;
+        --gold: #e9a812;
+        --gold-hi: #ffd94d;
+        --gold-lo: #b97e06;
+        --green: #2e9e5b;
+        --green-deep: #1f7a44;
+        --green-soft: #e0f3e4;
+        --red: #d64545;
+        --sky: #bfe3f2;
+        --shadow: 0 10px 30px rgba(46, 74, 40, .14);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1a14;
+          --bg-deep: #0a140e;
+          --panel: #16241b;
+          --panel-2: #1d2f23;
+          --ink: #eef6ee;
+          --ink-soft: #9db8a6;
+          --line: #2a4232;
+          --gold: #f5b81d;
+          --gold-hi: #ffe066;
+          --gold-lo: #c07f04;
+          --green: #3cc173;
+          --green-deep: #2e9e5b;
+          --green-soft: #14301f;
+          --red: #ff7a7a;
+          --sky: #274b5e;
+          --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        font-family: "Vazirmatn", system-ui, sans-serif;
+        background: radial-gradient(120% 60% at 50% 0%, var(--bg) 0%, var(--bg-deep) 100%);
+        color: var(--ink);
+        min-height: 100dvh;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .shell {
+        max-width: 480px;
+        margin: 0 auto;
+        padding: 14px 16px 110px;
+      }
+
+      /* ---------- Top badges (GRAM + clovers) ---------- */
+      .top-row {
+        display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+      }
+      .badge-pill {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: var(--panel); border: 1px solid var(--line);
+        border-radius: 999px; padding: 8px 16px;
+        box-shadow: var(--shadow);
+        font-variant-numeric: tabular-nums;
+      }
+      .badge-pill .b-num { font-weight: 900; font-size: 1.18rem; line-height: 1; }
+      .badge-pill .b-lab { color: var(--ink-soft); font-weight: 700; font-size: .85rem; }
+      .badge-pill.gram { flex: 1; justify-content: center; }
+      .badge-pill .drop-ic { width: 20px; height: 24px; flex: 0 0 auto; }
+      .badge-pill .clover-ic { font-size: 1.25rem; line-height: 1; }
+      .sound-btn {
+        border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+        border-radius: 999px; width: 42px; height: 42px; min-height: 42px; flex: 0 0 auto;
+        display: grid; place-items: center; cursor: pointer; font-size: 1.05rem;
+        box-shadow: var(--shadow);
+      }
+
+      /* ---------- Farm scene ---------- */
+      .scene-wrap {
+        position: relative;
+        border-radius: 24px; overflow: hidden;
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+        background: var(--sky);
+      }
+      .scene-wrap svg { display: block; width: 100%; height: auto; }
+      #cowTap { cursor: pointer; }
+      .tail {
+        transform-box: fill-box; transform-origin: 85% 8%;
+        animation: wag 1.6s ease-in-out infinite;
+      }
+      @keyframes wag {
+        0%, 100% { transform: rotate(7deg); }
+        50% { transform: rotate(-11deg); }
+      }
+      .cow-bob {
+        animation: bob 3.4s ease-in-out infinite;
+      }
+      @keyframes bob {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(2.5px); }
+      }
+      .eye {
+        transform-box: fill-box; transform-origin: center;
+        animation: blink 4.6s ease-in-out infinite;
+      }
+      @keyframes blink {
+        0%, 92%, 100% { transform: scaleY(1); }
+        95% { transform: scaleY(.12); }
+      }
+      .puff {
+        animation: puffFall 1.9s ease-in infinite;
+        opacity: 0;
+      }
+      .puff.p2 { animation-delay: .63s; }
+      .puff.p3 { animation-delay: 1.26s; }
+      @keyframes puffFall {
+        0% { transform: translateY(0); opacity: 0; }
+        16% { opacity: 1; }
+        74% { transform: translateY(31px); opacity: 1; }
+        88%, 100% { transform: translateY(38px); opacity: 0; }
+      }
+      .splash {
+        transform-box: fill-box; transform-origin: center;
+        animation: splashPop 1.9s ease-out infinite;
+        opacity: 0;
+      }
+      .splash.sp2 { animation-delay: .63s; }
+      .splash.sp3 { animation-delay: 1.26s; }
+      @keyframes splashPop {
+        0%, 72% { transform: scale(.4); opacity: 0; }
+        84% { transform: scale(1); opacity: .95; }
+        100% { transform: scale(1.3); opacity: 0; }
+      }
+      .ear {
+        transform-box: fill-box; transform-origin: center;
+        animation: earWig 2.6s ease-in-out infinite;
+      }
+      .ear-r { animation-delay: 1.3s; }
+      @keyframes earWig {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(-7deg); }
+      }
+      .head-sway {
+        transform-box: fill-box; transform-origin: 50% 88%;
+        animation: headSway 3.4s ease-in-out infinite;
+      }
+      @keyframes headSway {
+        0%, 100% { transform: rotate(-1.6deg); }
+        50% { transform: rotate(1.6deg); }
+      }
+      .spark {
+        transform-box: fill-box; transform-origin: center;
+        animation: sparkle 2.6s ease-in-out infinite;
+      }
+      .spark.s2 { animation-delay: .8s; }
+      .spark.s3 { animation-delay: 1.6s; }
+      @keyframes sparkle {
+        0%, 100% { transform: scale(.45) rotate(0deg); opacity: .25; }
+        50% { transform: scale(1) rotate(24deg); opacity: 1; }
+      }
+      .cloud {
+        animation: drift 26s ease-in-out infinite alternate;
+      }
+      .cloud.c2 { animation-duration: 34s; }
+      @keyframes drift {
+        from { transform: translateX(-8px); }
+        to { transform: translateX(14px); }
+      }
+      .float-plus {
+        position: absolute; z-index: 5; pointer-events: none;
+        font-weight: 900; font-size: 1.5rem; color: var(--green-deep);
+        text-shadow: 0 2px 0 rgba(255,255,255,.6), 0 4px 10px rgba(0,0,0,.18);
+        animation: floatUp .85s ease-out forwards;
+        font-variant-numeric: tabular-nums; white-space: nowrap;
+      }
+      @media (prefers-color-scheme: dark) {
+        .float-plus { color: #8fe6ae; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
+      }
+      @keyframes floatUp {
+        0% { opacity: 0; transform: translate(-50%, 0) scale(.7); }
+        15% { opacity: 1; transform: translate(-50%, -14px) scale(1.08); }
+        100% { opacity: 0; transform: translate(-50%, -92px) scale(1); }
+      }
+      .burst-star {
+        position: absolute; z-index: 6; pointer-events: none;
+        font-size: 1.35rem; line-height: 1;
+        animation: burstFly .95s ease-out forwards;
+      }
+      @keyframes burstFly {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+        18% { opacity: 1; }
+        100% { opacity: 0; transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px))) scale(1.2) rotate(50deg); }
+      }
+      .halo-anim {
+        transform-box: fill-box; transform-origin: center;
+        animation: haloFloat 2.8s ease-in-out infinite;
+      }
+      @keyframes haloFloat {
+        0%, 100% { transform: translateY(0); opacity: .95; }
+        50% { transform: translateY(-3px); opacity: 1; }
+      }
+      .glow-pulse {
+        animation: glowPulse 3s ease-in-out infinite;
+      }
+      @keyframes glowPulse {
+        0%, 100% { opacity: .45; }
+        50% { opacity: .8; }
+      }
+
+      /* ---------- Milking panel ---------- */
+      .milk-panel {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 20px;
+        box-shadow: var(--shadow); padding: 16px 18px; margin-top: 14px;
+      }
+      .milk-head {
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      }
+      .milk-head h2 { margin: 0; font-size: 1.45rem; font-weight: 900; }
+      .collect-btn {
+        border: none; border-radius: 999px; cursor: pointer;
+        background: var(--panel-2); border: 1px solid var(--line);
+        color: var(--ink); font-family: inherit; font-weight: 900; font-size: 1rem;
+        padding: 11px 22px; min-height: 48px;
+      }
+      .collect-btn.ready {
+        background: var(--green); border-color: var(--green-deep); color: #fff;
+        box-shadow: 0 6px 16px rgba(31, 122, 68, .35);
+      }
+      .collect-btn:active { transform: scale(.97); }
+      .milk-nums {
+        display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 10px;
+      }
+      .milk-amt .approx { color: var(--ink-soft); font-size: .9rem; }
+      .milk-amt .big {
+        font-size: 2.5rem; font-weight: 900; line-height: 1.05;
+        font-variant-numeric: tabular-nums;
+      }
+      .milk-amt .big small { font-size: 1rem; font-weight: 700; color: var(--ink-soft); }
+      .milk-full { text-align: left; }
+      .milk-full .f-lab { color: var(--ink-soft); font-size: .88rem; }
+      .milk-full .f-time {
+        font-size: 2.1rem; font-weight: 900; line-height: 1.1;
+        font-variant-numeric: tabular-nums; direction: ltr;
+      }
+      .milk-full .f-time.full { font-size: 1.35rem; color: var(--green-deep); direction: rtl; }
+      .milk-full .f-time.basket { direction: rtl; font-size: 1.55rem; }
+
+      /* ---------- Tap power strip ---------- */
+      .power-strip {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+        box-shadow: var(--shadow); padding: 10px 14px; margin-bottom: 12px;
+        text-align: center; font-weight: 800; font-size: .95rem;
+      }
+      .power-strip b { color: var(--green-deep); font-size: 1.15rem; font-variant-numeric: tabular-nums; }
+      @media (prefers-color-scheme: dark) { .power-strip b { color: var(--green); } }
+      .bar {
+        height: 11px; border-radius: 99px; background: var(--panel-2);
+        border: 1px solid var(--line); overflow: hidden; margin-top: 12px;
+      }
+      .bar > i {
+        display: block; height: 100%; width: 0%;
+        background: linear-gradient(90deg, var(--gold-lo), var(--gold), var(--gold-hi));
+        border-radius: 99px; transition: width .5s ease;
+      }
+      .milk-rate { margin-top: 9px; color: var(--ink-soft); font-size: .85rem; }
+      .milk-rate b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+      /* ---------- Boost cards ---------- */
+      .boost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+      .boost-card {
+        border: 1px solid var(--line); border-radius: 18px; cursor: pointer;
+        background: var(--panel); color: var(--ink); font-family: inherit;
+        box-shadow: var(--shadow); padding: 16px 10px 13px; text-align: center;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+      }
+      .boost-card .bc-big { font-size: 1.5rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+      .boost-card .bc-sub { color: var(--ink-soft); font-size: .85rem; font-weight: 700; }
+      .boost-card:disabled { opacity: .55; cursor: default; }
+      .boost-card:active:not(:disabled) { transform: scale(.98); }
+
+      /* ---------- Generic panels & lists ---------- */
+      .tab-panel { display: none; }
+      .tab-panel.on { display: block; }
+      .section-title { font-size: 1.12rem; font-weight: 900; margin: 20px 2px 4px; }
+      .section-sub { color: var(--ink-soft); font-size: .88rem; margin: 0 2px 12px; line-height: 1.8; }
+      .item {
+        display: flex; gap: 12px; align-items: center;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+        padding: 13px 14px; margin-bottom: 10px; box-shadow: var(--shadow);
+      }
+      .item .ic {
+        width: 52px; height: 52px; flex: 0 0 52px; border-radius: 14px;
+        background: var(--panel-2); border: 1px solid var(--line);
+        display: grid; place-items: center; font-size: 1.55rem;
+      }
+      .item .info { flex: 1; min-width: 0; }
+      .item .info .t { font-weight: 800; font-size: .98rem; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .owned {
+        background: var(--green-soft); color: var(--green-deep); border-radius: 99px;
+        font-size: .72rem; font-weight: 800; padding: 2px 9px;
+      }
+      @media (prefers-color-scheme: dark) { .owned { color: var(--green); } }
+      .item .info .d { color: var(--ink-soft); font-size: .82rem; margin-top: 2px; line-height: 1.7; }
+      .buy-btn {
+        border: none; border-radius: 12px; cursor: pointer; font-family: inherit;
+        background: var(--gold); color: #231a00; font-weight: 900;
+        padding: 9px 13px; min-height: 44px; min-width: 86px;
+        display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.25;
+      }
+      .buy-btn small { font-weight: 700; font-size: .72rem; opacity: .75; }
+      .buy-btn:disabled { background: var(--panel-2); color: var(--ink-soft); border: 1px solid var(--line); cursor: default; }
+      .task-btn { text-decoration: none; justify-content: center; }
+      .task-prog { margin-top: 6px; display: flex; align-items: center; gap: 8px; }
+      .task-prog .bar { flex: 1; height: 7px; margin-top: 0; }
+      .task-prog .tp-txt { font-size: .76rem; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .task-prog .tp-txt.done { color: var(--green-deep); font-weight: 800; }
+      .daily-badge { background: color-mix(in srgb, var(--gold) 22%, var(--panel)); color: var(--gold-lo); border: 1px solid var(--gold); border-radius: 99px; font-size: .7rem; font-weight: 800; padding: 2px 9px; }
+      @media (prefers-color-scheme: dark) { .daily-badge { color: var(--gold-hi); } }
+      .task-actions { display: flex; flex-direction: column; gap: 8px; flex: 0 0 auto; }
+      .act-btn {
+        border: 1px solid var(--line); border-radius: 12px; cursor: pointer; font-family: inherit;
+        background: var(--panel-2); color: var(--ink); font-weight: 800; font-size: .82rem;
+        padding: 8px 12px; min-height: 40px;
+      }
+      .task-done {
+        flex: 0 0 auto; background: var(--green-soft); color: var(--green-deep);
+        border: 1px solid var(--green); border-radius: 12px; font-weight: 900;
+        padding: 10px 14px; min-height: 44px; display: flex; align-items: center;
+      }
+      @media (prefers-color-scheme: dark) { .task-done { color: var(--green); } }
+
+      /* ---------- Special (Stars / TON) item ---------- */
+      .special-item {
+        border: 2px solid var(--gold) !important;
+        background: linear-gradient(135deg, color-mix(in srgb, var(--gold) 14%, var(--panel)), var(--panel)) !important;
+        position: relative; margin-top: 12px;
+      }
+      .special-badge {
+        position: absolute; top: -11px; inset-inline-start: 14px;
+        background: var(--gold); color: #231a00; font-size: .74rem; font-weight: 900;
+        border-radius: 99px; padding: 3px 12px;
+      }
+      .pay-col { display: flex; flex-direction: column; gap: 8px; flex: 0 0 auto; }
+      .pay-btn {
+        border: none; border-radius: 12px; cursor: pointer; font-family: inherit;
+        font-weight: 900; padding: 9px 13px; min-height: 44px; min-width: 118px;
+        display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.25;
+      }
+      .pay-btn small { font-weight: 700; font-size: .72rem; opacity: .8; }
+      .pay-btn.stars { background: #7a5af8; color: #fff; }
+      .pay-btn.ton { background: #229ed6; color: #fff; }
+      .pay-btn:disabled { background: var(--green-soft); color: var(--green-deep); border: 1px solid var(--green); cursor: default; }
+
+      /* ---------- Invite / friends ---------- */
+      .invite-card {
+        background: var(--panel); border: 1px solid var(--line);
+        border-radius: 16px; padding: 14px 16px; box-shadow: var(--shadow);
+      }
+      .invite-card h3 { margin: 0 0 4px; font-size: 1rem; }
+      .invite-card p { margin: 0 0 10px; color: var(--ink-soft); font-size: .87rem; line-height: 1.8; }
+      .invite-row { display: flex; gap: 8px; }
+      .invite-row code {
+        flex: 1; min-width: 0; background: var(--panel-2); border: 1px dashed var(--line); border-radius: 10px;
+        display: flex; align-items: center; padding: 0 10px; font-size: .78rem;
+        direction: ltr; text-align: left; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+      }
+      .copy-btn {
+        border: none; border-radius: 10px; background: var(--gold); color: #231a00;
+        font-family: inherit; font-weight: 800; padding: 0 18px; cursor: pointer; min-height: 42px;
+      }
+      .stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; }
+      .stat {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+        padding: 10px 8px; text-align: center; box-shadow: var(--shadow);
+      }
+      .stat .s-val { font-weight: 900; font-size: 1.08rem; font-variant-numeric: tabular-nums; }
+      .stat .s-lab { color: var(--ink-soft); font-size: .76rem; margin-top: 2px; }
+
+      /* ---------- Wallet ---------- */
+      .wallet-card {
+        background: var(--panel); border: 1px solid var(--line); border-radius: 18px;
+        padding: 16px; box-shadow: var(--shadow); margin-top: 14px;
+      }
+      .wallet-card h3 { margin: 0 0 6px; font-size: 1.02rem; }
+      .wallet-card p { margin: 0; color: var(--ink-soft); font-size: .87rem; line-height: 1.9; }
+      .w-rows { display: grid; gap: 8px; margin-top: 6px; }
+      .w-row {
+        display: flex; justify-content: space-between; align-items: center; gap: 10px;
+        background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px;
+        padding: 11px 14px; font-size: .92rem;
+      }
+      .w-row b { font-weight: 900; font-variant-numeric: tabular-nums; }
+      .pkg-grid { display: grid; gap: 10px; margin-top: 4px; }
+      .pkg-card { background: var(--panel-2); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+      .pkg-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+      .pkg-usd { font-size: 1.65rem; font-weight: 900; line-height: 1; }
+      .pkg-usd small { font-size: .82rem; font-weight: 700; color: var(--ink-soft); }
+      .pkg-cost { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font-weight: 800; font-size: .82rem; white-space: nowrap; }
+      .pkg-pays { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 12px; }
+      .pkg-pay { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 7px 4px; text-align: center; }
+      .pkg-pay b { display: block; font-size: .88rem; font-variant-numeric: tabular-nums; }
+      .pkg-pay span { font-size: .7rem; color: var(--ink-soft); }
+
+      /* ---------- Sync with bot ---------- */
+      .sync-card {
+        display: flex; flex-direction: column; gap: 12px;
+        background: var(--panel); border: 1px solid var(--line); border-radius: 16px;
+        padding: 13px 16px; box-shadow: var(--shadow); margin-top: 14px;
+      }
+      .sync-card.connected { border-color: var(--green); }
+      .sync-top { display: flex; gap: 12px; align-items: center; width: 100%; }
+      .sync-info { flex: 1; min-width: 0; }
+      .sync-info h3 { margin: 0 0 3px; font-size: .98rem; }
+      .sync-info p { margin: 0; color: var(--ink-soft); font-size: .84rem; line-height: 1.8; }
+      .sync-info p b { color: var(--ink); font-variant-numeric: tabular-nums; }
+      .sync-btn {
+        flex: 0 0 auto; border: none; border-radius: 12px; cursor: pointer;
+        background: var(--green); color: #fff; font-family: inherit; font-weight: 900;
+        padding: 11px 14px; min-height: 48px; font-size: .92rem; max-width: 46%;
+      }
+      .sync-btn:disabled { background: var(--panel-2); color: var(--ink-soft); border: 1px solid var(--line); cursor: default; }
+      .bot-link-btn {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        width: 100%; box-sizing: border-box; text-decoration: none; text-align: center;
+        background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+        color: #231a00; font-weight: 900; font-size: 1.08rem; line-height: 1.4;
+        border: 1px solid var(--gold-lo); border-radius: 14px;
+        padding: 14px 16px; min-height: 56px;
+        box-shadow: 0 6px 18px rgba(185, 126, 6, .28);
+        font-variant-numeric: tabular-nums;
+      }
+      .bot-link-btn:active { transform: scale(.985); }
+      .bot-link-btn.disabled {
+        background: var(--panel-2); color: var(--ink-soft); border-color: var(--line);
+        box-shadow: none; pointer-events: none; opacity: .65;
+      }
+      .bot-link-hint {
+        margin: 0; width: 100%; text-align: center;
+        color: var(--green-deep); font-size: .86rem; font-weight: 800; line-height: 1.9;
+        background: var(--green-soft); border: 1px solid var(--green);
+        border-radius: 12px; padding: 9px 12px; box-sizing: border-box;
+      }
+      @media (prefers-color-scheme: dark) { .bot-link-hint { color: var(--green); } }
+      .bot-link-hint[hidden] { display: none; }
+
+      /* ---------- Wheel of fortune ---------- */
+      .wheel-card {
+        margin-top: 14px; background: var(--panel); border: 1px solid var(--line);
+        border-radius: 16px; padding: 16px; box-shadow: var(--shadow); text-align: center;
+      }
+      .wheel-card h3 { margin: 0 0 4px; font-size: 1.05rem; }
+      .wheel-card .w-sub { margin: 0 0 12px; color: var(--ink-soft); font-size: .86rem; line-height: 1.8; }
+      .wheel-stage { position: relative; width: min(76vw, 300px); margin: 0 auto; }
+      .wheel-pointer {
+        position: absolute; top: -8px; right: 50%; transform: translateX(50%); z-index: 3;
+        width: 0; height: 0; border-right: 13px solid transparent; border-left: 13px solid transparent;
+        border-top: 22px solid var(--red);
+        filter: drop-shadow(0 2px 3px rgba(0,0,0,.3));
+      }
+      #wheelSvg { width: 100%; height: auto; display: block; filter: drop-shadow(0 12px 24px rgba(46,74,40,.25)); }
+      .wheel-hub {
+        position: absolute; top: 50%; right: 50%; transform: translate(50%, -50%); z-index: 2;
+        width: 58px; height: 58px; border-radius: 50%;
+        background: radial-gradient(circle at 35% 30%, var(--gold-hi), var(--gold) 60%, var(--gold-lo));
+        border: 3px solid var(--panel); display: grid; place-items: center; font-size: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,.25); pointer-events: none;
+      }
+      .wheel-spins { margin: 12px 0 4px; font-weight: 800; font-size: .95rem; }
+      .wheel-spins b { color: var(--gold-lo); font-variant-numeric: tabular-nums; }
+      @media (prefers-color-scheme: dark) { .wheel-spins b { color: var(--gold-hi); } }
+      .wheel-btns { display: flex; gap: 8px; margin-top: 10px; }
+      .spin-btn {
+        flex: 1.2; border: none; border-radius: 13px; cursor: pointer; font-family: inherit;
+        background: var(--gold); color: #231a00; font-weight: 900; font-size: 1rem;
+        padding: 12px; min-height: 50px;
+      }
+      .spin-btn:disabled { background: var(--panel-2); color: var(--ink-soft); border: 1px solid var(--line); cursor: default; }
+      .wheel-ad-btn {
+        flex: 1; border: none; border-radius: 13px; cursor: pointer; font-family: inherit;
+        background: var(--red); color: #fff; font-weight: 900; font-size: .92rem;
+        padding: 12px 8px; min-height: 50px;
+      }
+      .wheel-ad-btn:disabled { background: var(--panel-2); color: var(--ink-soft); border: 1px solid var(--line); cursor: default; }
+      .wheel-result { margin: 12px 0 0; font-weight: 900; font-size: .98rem; line-height: 1.9; display: none; }
+      .wheel-result.show { display: block; }
+      .wheel-result .cur-note { display: block; font-weight: 700; font-size: .78rem; color: var(--ink-soft); }
+      .wheel-note { margin: 10px 0 0; color: var(--ink-soft); font-size: .76rem; line-height: 1.8; }
+
+      /* ---------- Modals ---------- */
+      .modal {
+        position: fixed; inset: 0; z-index: 50; display: grid; place-items: center;
+        background: rgba(8, 10, 18, .66); padding: 18px;
+      }
+      .modal[hidden] { display: none; }
+      .modal-box {
+        width: 100%; max-width: 400px; background: var(--panel); color: var(--ink);
+        border: 1px solid var(--line); border-radius: 20px; padding: 18px;
+        box-shadow: var(--shadow); text-align: center;
+      }
+      .modal-box h3 { margin: 0 0 8px; font-size: 1.08rem; }
+      .modal-box p { margin: 0 0 12px; color: var(--ink-soft); font-size: .88rem; line-height: 1.9; }
+      .ad-screen {
+        border-radius: 14px; overflow: hidden; border: 1px solid var(--line);
+        background: linear-gradient(140deg, #274b73, #16324f 60%, #0e2233);
+        color: #fff; position: relative; padding: 30px 16px 20px; margin-bottom: 12px;
+      }
+      .ad-tag {
+        position: absolute; top: 8px; inset-inline-start: 8px;
+        background: rgba(255,255,255,.18); border-radius: 6px; padding: 2px 9px; font-size: .72rem; font-weight: 700;
+      }
+      .ad-creative .big { font-size: 2.4rem; }
+      .ad-creative p { color: #dbe7f5; margin: 6px 0 14px; font-size: .92rem; }
+      .ad-progress { height: 8px; border-radius: 99px; background: rgba(255,255,255,.22); overflow: hidden; }
+      .ad-progress > i { display: block; height: 100%; width: 0%; background: var(--gold-hi); transition: width .25s linear; }
+      .claim-btn {
+        width: 100%; border: none; border-radius: 13px; cursor: pointer;
+        background: var(--green); color: #fff; font-family: inherit; font-weight: 900;
+        font-size: 1rem; padding: 12px; min-height: 50px;
+      }
+      .claim-btn:disabled { background: var(--panel-2); color: var(--ink-soft); border: 1px solid var(--line); cursor: default; }
+      .modal-close {
+        margin-top: 8px; width: 100%; border: 1px solid var(--line); border-radius: 13px; cursor: pointer;
+        background: transparent; color: var(--ink); font-family: inherit; font-weight: 700;
+        padding: 10px; min-height: 44px;
+      }
+      .pay-price {
+        font-size: 1.5rem; font-weight: 900; margin: 6px 0 10px; font-variant-numeric: tabular-nums;
+      }
+
+      /* ---------- Bottom nav ---------- */
+      .tabbar {
+        position: fixed; bottom: 0; right: 0; left: 0; z-index: 20;
+        background: color-mix(in srgb, var(--panel) 92%, transparent);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--line);
+        padding: 8px max(12px, env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));
+      }
+      .tabbar-in {
+        max-width: 480px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px;
+      }
+      .tab-btn {
+        border: 1px solid transparent; background: transparent; color: var(--ink-soft);
+        font-family: inherit; font-weight: 800; font-size: .92rem; cursor: pointer;
+        border-radius: 13px; padding: 9px 4px; min-height: 52px;
+        display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative;
+      }
+      .tab-btn .tb-ic { font-size: 1.25rem; line-height: 1; }
+      .tab-btn .tb-dot {
+        position: absolute; top: 6px; inset-inline-start: calc(50% - 24px);
+        background: var(--gold); color: #231a00; border-radius: 99px;
+        font-size: .66rem; font-weight: 900; min-width: 18px; height: 18px;
+        display: grid; place-items: center; padding: 0 4px;
+      }
+      .tab-btn .tb-dot[hidden] { display: none; }
+      .tab-btn.on { background: var(--panel-2); border-color: var(--line); color: var(--ink); }
+
+      .toast {
+        position: fixed; bottom: 96px; right: 50%; transform: translateX(50%) translateY(20px);
+        background: #1f3a2a; color: #fff; border-radius: 12px; padding: 10px 18px;
+        font-size: .9rem; font-weight: 700; opacity: 0; pointer-events: none;
+        transition: opacity .25s ease, transform .25s ease; z-index: 40; max-width: 88vw; text-align: center;
+      }
+      .toast.show { opacity: 1; transform: translateX(50%) translateY(0); }
+
+      @media (prefers-reduced-motion: reduce) {
+        .tail, .cow-bob, .eye, .puff, .splash, .ear, .head-sway, .spark, .cloud, .halo-anim, .glow-pulse { animation: none; }
+        .puff { opacity: .9; }
+        .splash { display: none; }
+        .burst-star { display: none; }
+        .float-plus { animation-duration: .3s; }
+        * { transition: none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+
+      <!-- Top badges: GRAM balance + clovers -->
+      <div class="top-row">
+        <div class="badge-pill gram" aria-label="موجودی گرام">
+          <svg class="drop-ic" viewBox="0 0 20 24" aria-hidden="true">
+            <path d="M10 1 C10 1 2.5 10.5 2.5 15 a7.5 7.5 0 0 0 15 0 C17.5 10.5 10 1 10 1 Z" fill="#e9a812" stroke="#b97e06" stroke-width="1.2"/>
+            <ellipse cx="7" cy="15.5" rx="2" ry="3" fill="#ffd94d" opacity=".8"/>
+          </svg>
+          <span class="b-num" id="gramNum">۰٫۰۰۰۰</span>
+          <span class="b-lab">GRAM</span>
+        </div>
+        <div class="badge-pill" aria-label="تعداد شبدر">
+          <span class="clover-ic">☘️</span>
+          <span class="b-num" id="cloverNum">۰</span>
+          <span class="b-lab">شبدر</span>
+        </div>
+        <button class="sound-btn" id="soundBtn" type="button" aria-label="روشن یا خاموش کردن صدا">🔊</button>
+      </div>
+
+      <!-- ===================== BARN TAB ===================== -->
+      <section class="tab-panel on" id="panel-barn">
+        <div class="power-strip">🐑 سطح گوسفند: <b id="sheepLevel">گوسفند معمولی</b> — با هر ارتقا شیک‌تر می‌شه</div>
+        <div class="power-strip">🌾 نرخ تولید فعلی: <b id="powerTop">۱۲</b> پشم در دقیقه — تولید خودکار و ثابته؛ ضربه روی گوسفند جدا و مستقیم <b>+۱ امتیاز</b> می‌ده</div>
+        <div class="scene-wrap" id="sceneWrap">
+          <svg viewBox="0 0 360 300" role="img" aria-label="مرتع و طویله مزرعه Sheep">
+            <defs>
+              <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#a8d8ef"/>
+                <stop offset=".65" stop-color="#d8f0e4"/>
+                <stop offset="1" stop-color="#eef7da"/>
+              </linearGradient>
+              <clipPath id="bucketClip">
+                <path d="M166 248 L244 248 L238 282 Q237.4 286 232 286 L178 286 Q172.6 286 172 282 Z"/>
+              </clipPath>
+              <radialGradient id="glowG" cx=".5" cy=".5" r=".5">
+                <stop offset="0" stop-color="#ffd94d" stop-opacity=".55"/>
+                <stop offset=".6" stop-color="#ffd94d" stop-opacity=".22"/>
+                <stop offset="1" stop-color="#ffd94d" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- sky & meadow -->
+            <rect x="0" y="0" width="360" height="300" fill="url(#skyG)"/>
+            <circle cx="316" cy="42" r="20" fill="#ffd94d" opacity=".9"/>
+            <circle cx="316" cy="42" r="27" fill="#ffd94d" opacity=".25"/>
+            <g class="cloud" fill="#ffffff" opacity=".92">
+              <ellipse cx="70" cy="42" rx="30" ry="11"/>
+              <ellipse cx="92" cy="36" rx="20" ry="9"/>
+            </g>
+            <g class="cloud c2" fill="#ffffff" opacity=".8">
+              <ellipse cx="238" cy="26" rx="24" ry="9"/>
+              <ellipse cx="254" cy="21" rx="15" ry="7"/>
+            </g>
+            <path d="M0 208 Q90 178 190 200 T360 192 L360 300 L0 300 Z" fill="#9ccc7a"/>
+            <path d="M0 238 Q110 216 220 234 T360 230 L360 300 L0 300 Z" fill="#77b95e"/>
+
+            <!-- little barn -->
+            <g>
+              <rect x="14" y="196" width="52" height="38" fill="#b0563a"/>
+              <path d="M8 198 L40 176 L72 198 Z" fill="#7e3b26"/>
+              <rect x="31" y="212" width="18" height="22" fill="#7e3b26"/>
+              <path d="M31 212 L49 234 M49 212 L31 234" stroke="#e8c9a8" stroke-width="2"/>
+              <circle cx="40" cy="192" r="4.5" fill="#ffd94d"/>
+            </g>
+            <!-- fence -->
+            <g stroke="#a9743f" stroke-width="4" stroke-linecap="round">
+              <path d="M84 226 H168"/>
+              <path d="M84 240 H168"/>
+            </g>
+            <g stroke="#8d5c2e" stroke-width="5" stroke-linecap="round">
+              <path d="M94 216 V248"/><path d="M126 216 V248"/><path d="M158 216 V248"/>
+            </g>
+            <!-- grass tufts -->
+            <g stroke="#4e8f3e" stroke-width="2.4" stroke-linecap="round" fill="none">
+              <path d="M22 272 q-3 -10 -7 -14 M22 272 q0 -11 2 -16 M22 272 q4 -9 8 -12"/>
+              <path d="M330 282 q-3 -10 -7 -14 M330 282 q0 -11 2 -16 M330 282 q4 -9 8 -12"/>
+              <path d="M282 262 q-3 -9 -6 -12 M282 262 q0 -10 2 -14 M282 262 q4 -8 7 -11"/>
+              <path d="M66 288 q-3 -9 -6 -12 M66 288 q0 -10 2 -14 M66 288 q4 -8 7 -11"/>
+            </g>
+
+            <!-- sparkles -->
+            <g fill="#ffd94d">
+              <path class="spark" d="M96 128 l2.6 6.4 6.4 2.6 -6.4 2.6 -2.6 6.4 -2.6 -6.4 -6.4 -2.6 6.4 -2.6 Z"/>
+              <path class="spark s2" d="M292 108 l2.2 5.4 5.4 2.2 -5.4 2.2 -2.2 5.4 -2.2 -5.4 -5.4 -2.2 5.4 -2.2 Z"/>
+              <path class="spark s3" d="M262 196 l1.8 4.4 4.4 1.8 -4.4 1.8 -1.8 4.4 -1.8 -4.4 -4.4 -1.8 4.4 -1.8 Z"/>
+            </g>
+
+            <!-- legendary glow behind the sheep (گوسفند افسانه‌ای) -->
+            <circle id="legendGlow" class="glow-pulse" cx="205" cy="138" r="112" fill="url(#glowG)" style="display:none"/>
+
+                        <!-- SHEEP (tap target) -->
+            <g id="cowTap" role="button" aria-label="گوسفند — برای پشم بیشتر روش بزن">
+              <g class="cow-bob">
+                <!-- legs -->
+                <rect x="170" y="180" width="13" height="46" rx="6" fill="#e9dfc9"/>
+                <rect x="227" y="180" width="13" height="46" rx="6" fill="#e9dfc9"/>
+                <rect x="168" y="220" width="17" height="9" rx="4" fill="#4a4238"/>
+                <rect x="225" y="220" width="17" height="9" rx="4" fill="#4a4238"/>
+                <!-- fluffy body -->
+                <g class="wool-g" fill="#f8f4ea" stroke="#ddd3bf" stroke-width="1.6">
+                  <circle cx="141" cy="130" r="24"/>
+                  <circle cx="153" cy="105" r="26"/>
+                  <circle cx="181" cy="93" r="28"/>
+                  <circle cx="213" cy="91" r="28"/>
+                  <circle cx="243" cy="101" r="26"/>
+                  <circle cx="263" cy="125" r="23"/>
+                  <circle cx="259" cy="153" r="22"/>
+                  <circle cx="239" cy="173" r="24"/>
+                  <circle cx="206" cy="181" r="26"/>
+                  <circle cx="173" cy="175" r="24"/>
+                  <circle cx="149" cy="157" r="22"/>
+                  <ellipse cx="205" cy="137" rx="70" ry="47" stroke="none"/>
+                </g>
+                <!-- golden sparkles on the wool (گوسفند طلایی) -->
+                <g id="accGoldSpark" fill="#fff3b0" style="display:none">
+                  <path class="spark" d="M160 118 l2.2 5.4 5.4 2.2 -5.4 2.2 -2.2 5.4 -2.2 -5.4 -5.4 -2.2 5.4 -2.2 Z"/>
+                  <path class="spark s2" d="M248 140 l2.2 5.4 5.4 2.2 -5.4 2.2 -2.2 5.4 -2.2 -5.4 -5.4 -2.2 5.4 -2.2 Z"/>
+                  <path class="spark s3" d="M205 168 l1.8 4.4 4.4 1.8 -4.4 1.8 -1.8 4.4 -1.8 -4.4 -4.4 -1.8 4.4 -1.8 Z"/>
+                  <path class="spark s2" d="M150 152 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6 Z"/>
+                </g>
+                <!-- head, front-facing: two eyes, two ears -->
+                <g class="head-sway">
+                  <g class="ear ear-l">
+                    <ellipse cx="163" cy="110" rx="17" ry="9" fill="#f3ddba" stroke="#ddc39a" stroke-width="1.4" transform="rotate(-24 163 110)"/>
+                    <ellipse cx="163" cy="110" rx="9" ry="4.6" fill="#f7c3d0" transform="rotate(-24 163 110)"/>
+                  </g>
+                  <g class="ear ear-r">
+                    <ellipse cx="247" cy="110" rx="17" ry="9" fill="#f3ddba" stroke="#ddc39a" stroke-width="1.4" transform="rotate(24 247 110)"/>
+                    <ellipse cx="247" cy="110" rx="9" ry="4.6" fill="#f7c3d0" transform="rotate(24 247 110)"/>
+                  </g>
+                  <ellipse cx="205" cy="133" rx="31" ry="37" fill="#f3ddba" stroke="#ddc39a" stroke-width="1.4"/>
+                  <g class="wool-g" fill="#f8f4ea" stroke="#ddd3bf" stroke-width="1.4">
+                    <circle cx="187" cy="99" r="11"/>
+                    <circle cx="205" cy="93" r="13"/>
+                    <circle cx="223" cy="99" r="11"/>
+                  </g>
+                  <!-- crown (طویله بزرگ‌تر) -->
+                  <g id="accCrown" style="display:none">
+                    <path d="M186 90 L190 71 L199 81 L205 66 L211 81 L220 71 L224 90 Z" fill="#f5b81d" stroke="#b97e06" stroke-width="1.6" stroke-linejoin="round"/>
+                    <rect x="186" y="88" width="38" height="5" rx="2.5" fill="#e9a812" stroke="#b97e06" stroke-width="1.2"/>
+                    <circle cx="205" cy="84" r="2.6" fill="#d64545"/>
+                    <circle cx="193" cy="86" r="2" fill="#229ed6"/>
+                    <circle cx="217" cy="86" r="2" fill="#2e9e5b"/>
+                  </g>
+                  <!-- pink flower (علوفه بهتر) -->
+                  <g id="accFlower" style="display:none">
+                    <g fill="#f78fb8" stroke="#e56aa0" stroke-width="1">
+                      <circle cx="172" cy="82" r="5"/>
+                      <circle cx="182" cy="82" r="5"/>
+                      <circle cx="169" cy="90" r="5"/>
+                      <circle cx="185" cy="90" r="5"/>
+                      <circle cx="177" cy="94" r="5"/>
+                    </g>
+                    <circle cx="177" cy="88" r="3.6" fill="#ffd94d" stroke="#e9a812" stroke-width="1"/>
+                  </g>
+                  <g class="eye">
+                    <circle cx="193" cy="128" r="6" fill="#2c2620"/>
+                    <circle cx="195.2" cy="125.8" r="2" fill="#ffffff"/>
+                  </g>
+                  <g class="eye">
+                    <circle cx="217" cy="128" r="6" fill="#2c2620"/>
+                    <circle cx="219.2" cy="125.8" r="2" fill="#ffffff"/>
+                  </g>
+                  <ellipse cx="183" cy="146" rx="5.4" ry="3.4" fill="#f7a8bc" opacity=".8"/>
+                  <ellipse cx="227" cy="146" rx="5.4" ry="3.4" fill="#f7a8bc" opacity=".8"/>
+                  <ellipse cx="205" cy="151" rx="7.5" ry="5" fill="#e88ca0"/>
+                  <path d="M205 156 q0 5 -6 6 M205 156 q0 5 6 6" fill="none" stroke="#b05a72" stroke-width="2" stroke-linecap="round"/>
+                  <!-- sunglasses (دستگاه پشم‌چینی) -->
+                  <g id="accShades" style="display:none">
+                    <path d="M181 124 L168 118 M229 124 L242 118" stroke="#26303a" stroke-width="3.4" stroke-linecap="round"/>
+                    <rect x="179" y="118" width="25" height="18" rx="8" fill="#26303a"/>
+                    <rect x="206" y="118" width="25" height="18" rx="8" fill="#26303a"/>
+                    <rect x="201" y="123" width="8" height="3.4" fill="#26303a"/>
+                    <path d="M184 123 l7 -3 M211 123 l7 -3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity=".65"/>
+                  </g>
+                </g>
+                <!-- golden bell on the neck (گوسفند دوم) -->
+                <g id="accBell" style="display:none">
+                  <circle cx="205" cy="179" r="9" fill="#f5b81d" stroke="#b97e06" stroke-width="1.8"/>
+                  <path d="M196.5 179 H213.5" stroke="#b97e06" stroke-width="1.8"/>
+                  <circle cx="205" cy="183.5" r="2.2" fill="#8a5a00"/>
+                  <circle cx="201.8" cy="174.8" r="2.4" fill="#ffe066" opacity=".9"/>
+                </g>
+                <!-- halo (گوسفند افسانه‌ای) -->
+                <g id="accHalo" class="halo-anim" style="display:none">
+                  <ellipse cx="205" cy="58" rx="27" ry="7.5" fill="none" stroke="#ffd94d" stroke-width="4.5"/>
+                  <ellipse cx="205" cy="58" rx="27" ry="7.5" fill="none" stroke="#fff3b0" stroke-width="1.6" opacity=".8"/>
+                </g>
+              </g>
+            </g>
+
+            <!-- wool puffs: fall straight down from the body into the basket mouth (x = 185 / 205 / 225, basket center 205) -->
+            <g fill="#fffaf0" stroke="#ddd3bf" stroke-width="1.4">
+              <g class="puff"><circle cx="185" cy="201" r="6.2"/><circle cx="179.5" cy="205" r="4.6"/><circle cx="190.5" cy="205" r="4.6"/></g>
+              <g class="puff p2"><circle cx="205" cy="203" r="6.2"/><circle cx="199.5" cy="207" r="4.6"/><circle cx="210.5" cy="207" r="4.6"/></g>
+              <g class="puff p3"><circle cx="225" cy="201" r="6.2"/><circle cx="219.5" cy="205" r="4.6"/><circle cx="230.5" cy="205" r="4.6"/></g>
+            </g>
+
+            <!-- wool basket -->
+            <g>
+              <path d="M162 244 L248 244 L241 284 Q240.4 289 234 289 L176 289 Q169.6 289 169 284 Z" fill="#c99a5b" stroke="#8a5a2b" stroke-width="2.4"/>
+              <g clip-path="url(#bucketClip)">
+                <rect id="milkLevel" x="163" y="286" width="84" height="0" fill="#fffaf0"/>
+              </g>
+              <path d="M165 259 H245 M167 273 H243" stroke="#8a5a2b" stroke-width="2" opacity=".35" fill="none"/>
+              <ellipse cx="205" cy="245" rx="43" ry="6" fill="#eec27f" stroke="#8a5a2b" stroke-width="2"/>
+            </g>
+
+            <!-- small splash where each puff lands on the wool surface -->
+            <g fill="#fffaf0">
+              <g class="splash"><ellipse cx="185" cy="246" rx="8" ry="2.6"/><circle cx="179" cy="242" r="2.2"/><circle cx="191" cy="242" r="2.2"/></g>
+              <g class="splash sp2"><ellipse cx="205" cy="247" rx="8" ry="2.6"/><circle cx="199" cy="243" r="2.2"/><circle cx="211" cy="243" r="2.2"/></g>
+              <g class="splash sp3"><ellipse cx="225" cy="246" rx="8" ry="2.6"/><circle cx="219" cy="242" r="2.2"/><circle cx="231" cy="242" r="2.2"/></g>
+            </g>
+
+          </svg>
+        </div>
+
+        <div class="milk-panel">
+          <div class="milk-head">
+            <h2>در حال پشم‌چینی 🐑</h2>
+            <button class="collect-btn" id="collectBtn" type="button">جمع‌آوری کن</button>
+          </div>
+          <div class="milk-nums">
+            <div class="milk-amt">
+              <div class="approx">داخل سبد ≈ <b id="bucketPts">۰</b> امتیاز</div>
+              <div class="big"><span id="milkNum">۰</span> <small>پشم</small></div>
+            </div>
+            <div class="milk-full">
+              <div class="f-lab">پر شدن تا</div>
+              <div class="f-time" id="fullTime">50:00</div>
+            </div>
+          </div>
+          <div class="bar"><i id="milkBar"></i></div>
+          <p class="milk-rate">نرخ تولید فعلی: <b id="powerLbl">۱۲ پشم در دقیقه</b> · ظرفیت سبد: <b>۶۰۰ پشم</b> · تولید خودکار و ثابته و حتی وقتی بازی بسته‌ست ادامه داره؛ ضربه روی گوسفند روی تایمر و تولید هیچ اثری نداره و هر ضربه جدا <b>+۱ امتیاز</b> مستقیم می‌ده. سبد که پر شد، «جمع‌آوری کن» رو بزن تا دوباره جا باز بشه.</p>
+        </div>
+
+        <div class="boost-grid">
+          <button class="boost-card" id="boostAdBtn" type="button">
+            <span class="bc-big">+۱۰ دقیقه تولید</span>
+            <span class="bc-sub">📺 تبلیغ · <span id="boostAdLeft">۹</span> تا مونده</span>
+          </button>
+          <button class="boost-card" id="boostCloverBtn" type="button">
+            <span class="bc-big">+۱۰ دقیقه تولید</span>
+            <span class="bc-sub">☘️ ۱ شبدر</span>
+          </button>
+        </div>
+
+        <h2 class="section-title">🏡 فروشگاه ارتقای مزرعه</h2>
+        <p class="section-sub">هر ارتقا نرخ تولید پشم در دقیقه رو بیشتر می‌کنه؛ سبد زودتر پر می‌شه و تولید آفلاین هم سریع‌تر می‌شه. خرید از موجودی امتیازت کم می‌شه و هر خرید بعدی همون آیتم ۱۵٪ گرون‌تره.</p>
+        <div id="specialWrap"></div>
+        <div id="farmList"></div>
+      </section>
+
+      <!-- ===================== EARN TAB ===================== -->
+      <section class="tab-panel" id="panel-earn">
+        <h2 class="section-title">📅 تسک‌های روزانه</h2>
+        <p class="section-sub">این ۱۰ تسک هر روز از نو فعال می‌شن؛ امشب که تموم بشن، فردا دوباره می‌تونی همشون رو انجام بدی و جایزه بگیری. پیشرفت هر تسک شمرده می‌شه و دکمه دریافت فقط وقتی فعال می‌شه که شرطش کامل شده باشه. <span id="dailyDateLbl"></span></p>
+        <div id="dailyTaskList"></div>
+
+        <h2 class="section-title">🎯 تسک‌های همیشگی</h2>
+        <p class="section-sub">این تسک‌ها یک‌بار انجام می‌شن و همیشه همین‌جا می‌مونن. تو نسخه واقعی ربات، انجام تسک (مثلاً عضویت در کانال) خودکار بررسی می‌شه؛ اینجا بعد از انجام کار، دکمه «دریافت جایزه» رو بزن.</p>
+        <div id="taskList"></div>
+
+        <div class="wheel-card">
+          <h3>🎡 گردونه شانس</h3>
+          <p class="w-sub">هر روز ۱ چرخش رایگان داری؛ چرخش اضافه رو با تماشای تبلیغ بگیر. جایزه‌ها مستقیم می‌رن تو موجودیت و قابل ثبت در رباتن. یه خانه ☘️ هم داره که شبدر می‌ده!</p>
+          <div class="wheel-stage">
+            <div class="wheel-pointer"></div>
+            <svg id="wheelSvg" viewBox="0 0 300 300" role="img" aria-label="گردونه شانس"></svg>
+            <div class="wheel-hub">🎡</div>
+          </div>
+          <p class="wheel-spins" id="wheelSpinsLbl">چرخش‌های باقی‌مانده: <b>۱</b></p>
+          <div class="wheel-btns">
+            <button class="spin-btn" id="spinBtn" type="button">🎡 بچرخون</button>
+            <button class="wheel-ad-btn" id="wheelAdBtn" type="button">📺 تبلیغ ببین و بچرخون</button>
+          </div>
+          <p class="wheel-result" id="wheelResult" role="status"></p>
+          <p class="wheel-note">خانه‌های ارزی گردونه: <b>۰٫۰۱ تون = ۱۶۰ امتیاز</b> و <b>۰٫۰۵ تتر = ۵۰۰ امتیاز</b> — معادل امتیازی به موجودیت اضافه می‌شه؛ موقع برداشت تون/تتر واقعی می‌گیری. خانه ☘️ هم ۱ شبدر می‌ده که باهاش می‌تونی «+۱۰ دقیقه تولید» بگیری.</p>
+        </div>
+
+        <div class="invite-card" style="margin-top:14px">
+          <h3>💰 درآمد از تبلیغ و تسک</h3>
+          <p>همین دو بخش، موتور درآمد رباتن: اسپانسر برای تبلیغ و تسک‌ها پول می‌ده و از همون محل، برداشت‌های کاربرا پرداخت می‌شه.</p>
+        </div>
+      </section>
+
+      <!-- ===================== FRIENDS TAB ===================== -->
+      <section class="tab-panel" id="panel-friends">
+        <h2 class="section-title">👥 دوستان</h2>
+        <p class="section-sub">مزرعه‌ت رو با دوستات بزرگ‌تر کن؛ هر دعوت موفق، امتیاز مستقیم میاره تو موجودیت.</p>
+        <div class="invite-card">
+          <h3>👥 دعوت دوستان</h3>
+          <p>لینک دعوتت رو برای دوستات بفرست؛ با ثبت‌نام و شروع بازی هر دوست، <b>۵۰۰ امتیاز</b> جایزه می‌گیری و اونم ۲۵۰ امتیاز شروع می‌گیره. رشد بازی از همین رفرال میاد.</p>
+          <div class="invite-row">
+            <code id="inviteCode">t.me/EbiPay_Official_Bot?start=ref_4821</code>
+            <button class="copy-btn" id="copyInvite" type="button">کپی</button>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat"><div class="s-val">۵۰۰</div><div class="s-lab">امتیاز هر دعوت موفق</div></div>
+          <div class="stat"><div class="s-val">۲۵۰</div><div class="s-lab">امتیاز شروع دوستت</div></div>
+          <div class="stat"><div class="s-val" id="statTaps">۰</div><div class="s-lab">ضربه‌های تو روی گوسفند</div></div>
+        </div>
+      </section>
+
+      <!-- ===================== WALLET TAB ===================== -->
+      <section class="tab-panel" id="panel-wallet">
+        <h2 class="section-title">👛 کیف پول</h2>
+        <p class="section-sub">موجودی و ثبت امتیازت اینجاست. نرخ تبدیل: هر <b>۱۶٬۰۰۰ امتیاز = ۱ GRAM</b>.</p>
+
+        <div class="wallet-card">
+          <h3>موجودی مزرعه</h3>
+          <div class="w-rows">
+            <div class="w-row"><span>موجودی امتیاز</span><b id="wBalance">۰ امتیاز</b></div>
+            <div class="w-row"><span>معادل GRAM</span><b id="wGram">۰٫۰۰۰۰ GRAM</b></div>
+            <div class="w-row"><span>مجموع کسب‌شده تا امروز</span><b id="wTotal">۰ امتیاز</b></div>
+            <div class="w-row"><span>امتیاز ثبت‌نشده در ربات</span><b id="wUnsent">۰ امتیاز</b></div>
+          </div>
+        </div>
+
+        <div class="sync-card" id="syncCard">
+          <div class="sync-top">
+            <div class="sync-info">
+              <h3>🔄 سینک با حساب ربات</h3>
+              <p id="syncStatus">در حال بررسی اتصال به تلگرام…</p>
+            </div>
+            <button class="sync-btn" id="syncBtn" type="button" disabled>ثبت امتیاز در ربات</button>
+          </div>
+          <a class="bot-link-btn disabled" id="botLinkBtn" href="https://t.me/EbiPay_Official_Bot?start=pts_0" target="_blank" rel="noopener" aria-disabled="true">⭐ ثبت امتیاز در ربات</a>
+          <p class="bot-link-hint" id="botLinkHint" hidden>ربات باز می‌شود؛ دکمه Start را بزن تا امتیاز به حسابت بنشیند</p>
+        </div>
+
+        <div class="wallet-card">
+          <h3>پکیج‌های برداشت</h3>
+          <p>برداشت فقط با پکیج‌های ثابت دلاری انجام می‌شه. TON و NOT روی شبکه TON هستن؛ USDT روی شبکه BEP20.</p>
+          <div class="pkg-grid" id="pkgGrid" style="margin-top:12px"></div>
+          <p style="margin-top:12px">📝 <b>برداشت نهایی داخل خود ربات انجام می‌شه:</b> اول امتیازت رو با دکمه طلایی بالا ثبت کن، بعد تو چت ربات Sheep از بخش برداشت، پکیج و آدرس کیف پولت رو ثبت کن تا بعد از تأیید مدیر واریز بشه.</p>
+        </div>
+      </section>
+    </main>
+
+    <nav class="tabbar" aria-label="بخش‌های بازی">
+      <div class="tabbar-in">
+        <button class="tab-btn on" type="button" data-tab="barn"><span class="tb-ic">🐄</span>طویله</button>
+        <button class="tab-btn" type="button" data-tab="earn"><span class="tb-ic">⭐</span>کسب امتیاز<span class="tb-dot" id="earnDot" hidden>۱</span></button>
+        <button class="tab-btn" type="button" data-tab="friends"><span class="tb-ic">👥</span>دوستان</button>
+        <button class="tab-btn" type="button" data-tab="wallet"><span class="tb-ic">👛</span>کیف پول</button>
+      </div>
+    </nav>
+
+    <!-- Ad modal (demo ad) -->
+    <div class="modal" id="adModal" hidden>
+      <div class="modal-box">
+        <div class="ad-screen">
+          <span class="ad-tag">تبلیغ نمایشی</span>
+          <div class="ad-creative">
+            <div class="big">📣</div>
+            <p>اینجا تبلیغ اسپانسر نمایش داده می‌شود</p>
+          </div>
+          <div class="ad-progress"><i id="adProg"></i></div>
+        </div>
+        <p id="adStatus">در حال پخش تبلیغ… <b id="adCount">۵</b> ثانیه مونده</p>
+        <button class="claim-btn" id="adClaim" type="button" disabled>🎁 دریافت جایزه</button>
+        <button class="modal-close" id="adClose" type="button">بستن</button>
+      </div>
+    </div>
+
+    <!-- Payment modal (Telegram Stars / TON, demo) -->
+    <div class="modal" id="payModal" hidden>
+      <div class="modal-box">
+        <h3 id="payTitle">خرید گوسفند افسانه‌ای</h3>
+        <div class="pay-price" id="payPrice">۵۰ ⭐</div>
+        <p id="payDesc">پرداخت با ستاره‌های تلگرام (Telegram Stars).</p>
+        <p>در نسخه واقعی ربات، پرداخت با فاکتور رسمی تلگرام یا اتصال کیف پول TON انجام می‌شه؛ اینجا پرداخت <b>نمایشی</b> است و بدون پرداخت واقعی، آیتم فعال می‌شه.</p>
+        <button class="claim-btn" id="payConfirm" type="button">پرداخت نمایشی و فعال‌سازی</button>
+        <button class="modal-close" id="payClose" type="button">انصراف</button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+      (function () {
+        "use strict";
+        var fa = function (n) { return Math.floor(n).toLocaleString("fa-IR"); };
+        var faNum = function (n) { return (Math.round(n * 1000) / 1000).toLocaleString("fa-IR"); };
+        var faGram = function (pts) {
+          return (pts / 16000).toLocaleString("fa-IR", { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+        };
+
+        /* ---------------- Farm constants ---------------- */
+        var GRAM_DIV = 16000;          // every 16,000 points = 1 GRAM
+        var MILK_CAP = 600;            // basket capacity (wool)
+        var BASE_RATE = 12;            // base production: 12 wool per minute, timed & independent
+        var TAP_POINTS = 1;            // each tap on the sheep = +1 point, straight to balance
+        var BOOST_MINUTES = 10;        // boost cards add 10 minutes of production at once
+        var AD_BOOST_DAILY_MAX = 9;    // ad boost uses per day
+
+        var FARM = [
+          { id: "fodder",  icon: "🌾", name: "علوفه بهتر",      baseCost: 100,     power: 1,  desc: "علوفه تازه و مقوی؛ نرخ تولید +۱ پشم در دقیقه." },
+          { id: "cow2",    icon: "🐑", name: "گوسفند دوم",          baseCost: 1100,    power: 8,  desc: "یه گوسفند دیگه به طویله اضافه می‌شه؛ نرخ تولید +۸ پشم در دقیقه." },
+          { id: "barn",    icon: "🏠", name: "طویله بزرگ‌تر",    baseCost: 12000,   power: 47, desc: "جای بیشتر و هوای بهتر؛ نرخ تولید +۴۷ پشم در دقیقه." },
+          { id: "machine", icon: "✂️", name: "دستگاه پشم‌چینی",  baseCost: 130000,  power: 260, desc: "پشم‌چینی خودکار و سریع؛ نرخ تولید +۲۶۰ پشم در دقیقه." },
+          { id: "goldcow", icon: "✨", name: "گوسفند طلایی",        baseCost: 1400000, power: 1400, desc: "گوسفند افسانه‌ای مزرعه؛ نرخ تولید +۱٬۴۰۰ پشم در دقیقه." }
+        ];
+        var SPECIAL = { icon: "🌟", name: "گوسفند افسانه‌ای", power: 250, stars: 50, ton: 0.5 };
+        // Fixed dollar packages — base rate: every 10,000 points = $1 ≈ 0.625 TON
+        var PACKAGES = [
+          { usd: 1, cost: 10000, TON: 0.625, NOT: 3125,  USDT: 1 },
+          { usd: 3, cost: 30000, TON: 1.875, NOT: 9375,  USDT: 3 },
+          { usd: 5, cost: 50000, TON: 3.125, NOT: 15625, USDT: 5 }
+        ];
+
+        /* ---------------- State ---------------- */
+        var S = {
+          balance: 0,
+          totalEarned: 0,
+          taps: 0,
+          clovers: 0,
+          milk: 0,          // float; 1 milk collected = 1 point
+          farm: {},         // id -> owned count
+          special: false,   // گوسفند افسانه‌ای (Stars/TON item)
+          tasks: {},        // permanent tasks: id -> 0/1/2
+          wheelSpins: 0,    // extra wheel spins earned from ads
+          adsWatched: 0,
+          sound: true,
+          daily: null
+        };
+        FARM.forEach(function (f) { S.farm[f.id] = 0; });
+        var syncedBase = 0;   // balance value already submitted to the bot
+        var syncedTotal = 0;  // total points submitted during all sessions
+
+        function farmCost(f) { return Math.ceil(f.baseCost * Math.pow(1.15, S.farm[f.id])); }
+        function prodRate() {
+          var r = BASE_RATE;
+          FARM.forEach(function (f) { r += S.farm[f.id] * f.power; });
+          if (S.special) r += SPECIAL.power;
+          return r;
+        }
+
+        /* ---------------- Persistence ----------------
+           Timed production runs on its own at prodRate() wool per minute,
+           fully independent of tapping. The save stores a timestamp so
+           offline production is credited on load (capped at the basket). */
+        var SAVE_KEY = "earnGramFarmSaveV1";
+        function save() {
+          try {
+            localStorage.setItem(SAVE_KEY, JSON.stringify({
+              v: 1, ts: Date.now(),
+              balance: S.balance, totalEarned: S.totalEarned, taps: S.taps,
+              clovers: S.clovers, milk: S.milk, farm: S.farm, special: S.special,
+              tasks: S.tasks, wheelSpins: S.wheelSpins, adsWatched: S.adsWatched,
+              sound: S.sound, daily: S.daily,
+              syncedBase: syncedBase, syncedTotal: syncedTotal
+            }));
+          } catch (e) { /* storage may be unavailable; game still runs in-session */ }
+        }
+        function load() {
+          var raw = null;
+          try { raw = localStorage.getItem(SAVE_KEY); } catch (e) { /* ignore */ }
+          if (!raw) return;
+          var d;
+          try { d = JSON.parse(raw); } catch (e) { return; }
+          if (!d || typeof d !== "object") return;
+          if (typeof d.balance === "number") S.balance = d.balance;
+          if (typeof d.totalEarned === "number") S.totalEarned = d.totalEarned;
+          if (typeof d.taps === "number") S.taps = d.taps;
+          if (typeof d.clovers === "number") S.clovers = d.clovers;
+          if (typeof d.milk === "number") S.milk = Math.min(MILK_CAP, Math.max(0, d.milk));
+          if (d.farm && typeof d.farm === "object") FARM.forEach(function (f) { if (typeof d.farm[f.id] === "number") S.farm[f.id] = d.farm[f.id]; });
+          S.special = !!d.special;
+          if (d.tasks && typeof d.tasks === "object") S.tasks = d.tasks;
+          if (typeof d.wheelSpins === "number") S.wheelSpins = d.wheelSpins;
+          if (typeof d.adsWatched === "number") S.adsWatched = d.adsWatched;
+          if (typeof d.sound === "boolean") S.sound = d.sound;
+          if (d.daily && typeof d.daily === "object") S.daily = d.daily;
+          if (typeof d.syncedBase === "number") syncedBase = d.syncedBase;
+          if (typeof d.syncedTotal === "number") syncedTotal = d.syncedTotal;
+          // Offline production: wool kept growing at the current rate while
+          // the page was closed, based on the saved timestamp.
+          if (typeof d.ts === "number" && d.ts > 0 && S.milk < MILK_CAP) {
+            var elapsed = Math.max(0, (Date.now() - d.ts) / 1000);
+            if (elapsed > 0) S.milk = Math.min(MILK_CAP, S.milk + elapsed * prodRate() / 60);
+          }
+        }
+
+        /* ---------------- Daily state ---------------- */
+        function todayKey() {
+          var d = new Date();
+          return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+        }
+        function freshDaily() {
+          return {
+            date: todayKey(),
+            taps: 0, ads: 0, buys: 0, farmBoosts: 0, boostsUsed: 0,
+            synced: 0, shared: 0, wdVisit: 0,
+            freeSpinUsed: false,
+            claimed: {}
+          };
+        }
+        var lastDailyUiKey = "";
+        function ensureDaily() {
+          if (!S.daily || S.daily.date !== todayKey()) {
+            S.daily = freshDaily();
+            lastDailyUiKey = "";
+            var dl = document.getElementById("dailyDateLbl");
+            if (dl) dl.textContent = "امروز: " + new Date().toLocaleDateString("fa-IR", { weekday: "long", day: "numeric", month: "long" }) + " — فردا همه از اول فعال می‌شن.";
+            if (typeof updateWheelUI === "function") updateWheelUI();
+          }
+          // normalize a restored daily object that may miss newer fields
+          ["taps", "ads", "buys", "farmBoosts", "boostsUsed", "synced", "shared", "wdVisit"].forEach(function (k) {
+            if (typeof S.daily[k] !== "number") S.daily[k] = 0;
+          });
+          if (!S.daily.claimed || typeof S.daily.claimed !== "object") S.daily.claimed = {};
+          return S.daily;
+        }
+
+        /* ---------------- DOM ---------------- */
+        var $ = function (id) { return document.getElementById(id); };
+        var toastEl = $("toast");
+        var toastTimer = null;
+        function toast(msg) {
+          toastEl.textContent = msg;
+          toastEl.classList.add("show");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2400);
+        }
+
+        /* ---------------- Telegram sync (bot is the main bank) ----------------
+           The bot (@EbiPay_Official_Bot, runner.py) accepts points two ways:
+           1) Telegram WebApp sendData {"earned": N} — only when the game is
+              opened from the bot's keyboard «🎮 بازی» button.
+           2) The golden deep link t.me/EbiPay_Official_Bot?start=pts_<N> —
+              works everywhere; pressing Start in the bot credits the claim. */
+        var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
+        var inTelegram = !!(tg && tg.initData);
+        var tgUser = (inTelegram && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
+        if (tg) { try { tg.ready(); tg.expand(); } catch (e) { /* outside Telegram */ } }
+        function pendingSync() { return Math.max(0, Math.floor(S.balance) - syncedBase); }
+
+        var syncCard = $("syncCard"), syncStatus = $("syncStatus"), syncBtn = $("syncBtn");
+        var botLinkBtn = $("botLinkBtn"), botLinkHint = $("botLinkHint");
+        var lastSyncUiKey = "";
+        var lastBotLinkKey = "";
+        var botLinkNavigating = false;
+        function updateBotLink() {
+          if (!botLinkBtn) return;
+          // While a click is opening the bot, never rewrite the href: the
+          // browser reads it after the click handler runs, so resetting it
+          // to pts_0 here would send 0 points to the bot instead of the
+          // amount the user tapped to register.
+          if (botLinkNavigating) return;
+          var pending = pendingSync();
+          var key = "pts_" + pending;
+          if (key === lastBotLinkKey) return;
+          lastBotLinkKey = key;
+          botLinkBtn.href = "https://t.me/EbiPay_Official_Bot?start=pts_" + pending;
+          if (pending > 0) {
+            botLinkBtn.textContent = "⭐ ثبت " + fa(pending) + " امتیاز در ربات";
+            botLinkBtn.classList.remove("disabled");
+            botLinkBtn.removeAttribute("aria-disabled");
+          } else {
+            botLinkBtn.textContent = "⭐ ثبت امتیاز در ربات";
+            botLinkBtn.classList.add("disabled");
+            botLinkBtn.setAttribute("aria-disabled", "true");
+          }
+        }
+        if (botLinkBtn) {
+          botLinkBtn.addEventListener("click", function (e) {
+            var amt = pendingSync();
+            if (amt <= 0) { e.preventDefault(); return; }
+            // Mark this amount as submitted the moment the link is tapped,
+            // so the same points are never offered for registration twice.
+            syncedBase = Math.floor(S.balance);
+            syncedTotal += amt;
+            try { ensureDaily().synced = 1; } catch (err) { /* daily is optional */ }
+            lastSyncUiKey = "";
+            if (botLinkHint) botLinkHint.hidden = false;
+            save();
+            // Keep this click's href (pts_<amt>) untouched until the browser
+            // has opened it: flag the navigation and only afterwards reset
+            // the button to its disabled pts_0 state (pending is now 0).
+            botLinkNavigating = true;
+            if (typeof updateSyncUI === "function") updateSyncUI();
+            if (typeof renderWallet === "function") renderWallet();
+            setTimeout(function () {
+              botLinkNavigating = false;
+              lastBotLinkKey = "";
+              lastSyncUiKey = "";
+              updateBotLink();
+              if (typeof updateSyncUI === "function") updateSyncUI();
+              if (typeof renderWallet === "function") renderWallet();
+            }, 600);
+            // Do not preventDefault: the plain t.me link opens the bot,
+            // where pressing Start delivers /start pts_<amt> to the bot.
+          });
+        }
+        function updateSyncUI() {
+          updateBotLink();
+          if (!syncStatus || !syncBtn) return;
+          var pending = pendingSync();
+          var key = (inTelegram ? "tg" : "web") + "|" + pending + "|" + syncedTotal;
+          if (key === lastSyncUiKey) return;
+          lastSyncUiKey = key;
+          if (!inTelegram) {
+            syncCard.classList.remove("connected");
+            syncStatus.innerHTML = "اتصال مستقیم تلگرام برقرار نیست، ولی امتیازت از دست نمی‌ره: با دکمه طلایی <b>«⭐ ثبت امتیاز در ربات»</b> پایین همین کارت، امتیازت مستقیم می‌ره تو ربات <b>Sheep</b> — فقط کافیه تو ربات دکمه <b>Start</b> رو بزنی." + (pending > 0 ? " الان <b>" + fa(pending) + " امتیاز</b> آماده ثبته." : "");
+            syncBtn.disabled = true;
+            syncBtn.textContent = "ثبت امتیاز در ربات";
+            return;
+          }
+          syncCard.classList.add("connected");
+          var who = tgUser ? (tgUser.first_name || "بازیکن") : "بازیکن";
+          if (pending > 0) {
+            syncStatus.innerHTML = "✅ متصل به حساب تلگرام <b>" + who + "</b> — <b>" + fa(pending) + " امتیاز</b> این جلسه هنوز تو ربات ثبت نشده. دکمه ثبت رو بزن تا بره تو حسابت؛ بعدش با دکمه «💰 موجودی» تو ربات می‌بینیش.";
+            syncBtn.disabled = false;
+            syncBtn.textContent = "📤 ثبت " + fa(pending) + " امتیاز در ربات";
+          } else if (syncedTotal > 0) {
+            syncStatus.innerHTML = "✅ همه امتیازت به ربات ارسال شده (" + fa(syncedTotal) + " امتیاز). موجودی اصلیت رو با دکمه «💰 موجودی» تو چت ربات ببین.";
+            syncBtn.disabled = true;
+            syncBtn.textContent = "✓ ثبت شد";
+          } else {
+            syncStatus.innerHTML = "✅ متصل به حساب تلگرام <b>" + who + "</b> — بانک اصلی امتیازت رباته. بازی کن و هر وقت خواستی با دکمه ثبت، امتیازت رو بفرست تو حسابت.";
+            syncBtn.disabled = true;
+            syncBtn.textContent = "ثبت امتیاز در ربات";
+          }
+          try {
+            if (tg.MainButton) {
+              if (pending > 0) {
+                tg.MainButton.setText("📤 ثبت " + fa(pending) + " امتیاز در ربات");
+                tg.MainButton.show();
+              } else {
+                tg.MainButton.hide();
+              }
+            }
+            if (pending > 0 && tg.enableClosingConfirmation) tg.enableClosingConfirmation();
+            if (pending <= 0 && tg.disableClosingConfirmation) tg.disableClosingConfirmation();
+          } catch (e) { /* MainButton is optional */ }
+        }
+        function doSync() {
+          var amt = pendingSync();
+          if (!inTelegram) { toast("برای ثبت امتیاز، بازی رو از دکمه «🎮 بازی» ربات باز کن"); return; }
+          if (amt <= 0) { toast("امتیاز جدیدی برای ثبت نداری"); return; }
+          try {
+            tg.sendData(JSON.stringify({
+              earned: amt,
+              balance: Math.floor(S.balance),
+              totalEarned: Math.floor(S.totalEarned),
+              source: "game_sync"
+            }));
+            syncedBase = Math.floor(S.balance);
+            syncedTotal += amt;
+            ensureDaily().synced = 1;
+            lastSyncUiKey = "";
+            save();
+            updateSyncUI();
+            toast("📤 " + fa(amt) + " امتیاز به ربات ارسال شد — پیام تأییدش تو چت ربات میاد");
+          } catch (e) {
+            toast("ارسال نشد — بازی رو از دکمه «🎮 بازی» کیبورد ربات باز کن، نه دکمه منوی بالا");
+          }
+        }
+        if (syncBtn) syncBtn.addEventListener("click", doSync);
+        if (inTelegram && tg.MainButton && tg.MainButton.onClick) {
+          try { tg.MainButton.onClick(doSync); } catch (e) { /* optional */ }
+        }
+        // Real invite link for this Telegram account (bot referral: ref_<user id>)
+        (function () {
+          var code = $("inviteCode");
+          if (code) code.textContent = "t.me/EbiPay_Official_Bot?start=ref_" + (tgUser && tgUser.id ? tgUser.id : "4821");
+        })();
+
+        /* ---------------- Sound ---------------- */
+        var actx = null;
+        function blip(freq) {
+          if (!S.sound) return;
+          try {
+            if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+            if (actx.state === "suspended") actx.resume();
+            var o = actx.createOscillator(), g = actx.createGain();
+            o.type = "triangle"; o.frequency.value = freq || 620;
+            g.gain.setValueAtTime(0.08, actx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.09);
+            o.connect(g); g.connect(actx.destination);
+            o.start(); o.stop(actx.currentTime + 0.1);
+          } catch (e) { /* sound is optional */ }
+        }
+        var soundBtn = $("soundBtn");
+        function renderSoundBtn() { soundBtn.textContent = S.sound ? "🔊" : "🔇"; }
+        soundBtn.addEventListener("click", function () {
+          S.sound = !S.sound;
+          renderSoundBtn();
+          save();
+          if (S.sound) blip(700);
+        });
+
+        function copyText(txt, okMsg) {
+          function done() { toast(okMsg); }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(txt).then(done, function () { fallback(); });
+          } else { fallback(); }
+          function fallback() {
+            var ta = document.createElement("textarea");
+            ta.value = txt; document.body.appendChild(ta); ta.select();
+            try { document.execCommand("copy"); done(); } catch (e) { toast("کپی نشد — دستی کپی کن"); }
+            ta.remove();
+          }
+        }
+
+        /* ---------------- Farm rendering ---------------- */
+        var gramNum = $("gramNum"), cloverNum = $("cloverNum"),
+            milkNum = $("milkNum"), bucketPts = $("bucketPts"), fullTime = $("fullTime"),
+            milkBar = $("milkBar"), milkLevel = $("milkLevel"), powerLbl = $("powerLbl"),
+            powerTop = $("powerTop"),
+            collectBtn = $("collectBtn"), boostAdBtn = $("boostAdBtn"),
+            boostCloverBtn = $("boostCloverBtn"), boostAdLeft = $("boostAdLeft"),
+            sceneWrap = $("sceneWrap"), cowTap = $("cowTap");
+        function renderHeader() {
+          gramNum.textContent = faGram(S.balance);
+          cloverNum.textContent = fa(S.clovers);
+        }
+        function renderFarm() {
+          var milkWhole = Math.floor(S.milk);
+          milkNum.textContent = fa(milkWhole);
+          bucketPts.textContent = fa(milkWhole);
+          var pct = Math.max(0, Math.min(100, (S.milk / MILK_CAP) * 100));
+          milkBar.style.width = pct + "%";
+          var h = (pct / 100) * 38;
+          milkLevel.setAttribute("y", String(286 - h));
+          milkLevel.setAttribute("height", String(h));
+          var rate = prodRate();
+          powerLbl.textContent = fa(rate) + " پشم در دقیقه";
+          if (powerTop) powerTop.textContent = fa(rate);
+          if (S.milk >= MILK_CAP) {
+            fullTime.textContent = "سبد پره! 🧺";
+            fullTime.classList.add("full");
+          } else {
+            var secsLeft = Math.ceil((MILK_CAP - S.milk) / rate * 60);
+            var mm = Math.floor(secsLeft / 60), ss = secsLeft % 60;
+            fullTime.textContent = (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss;
+            fullTime.classList.remove("full");
+          }
+          collectBtn.classList.toggle("ready", milkWhole >= 1);
+          var d = ensureDaily();
+          var left = Math.max(0, AD_BOOST_DAILY_MAX - (d.farmBoosts || 0));
+          boostAdLeft.textContent = fa(left);
+          boostAdBtn.disabled = left <= 0;
+          boostCloverBtn.disabled = S.clovers < 1;
+        }
+        function renderWallet() {
+          $("wBalance").textContent = fa(S.balance) + " امتیاز";
+          $("wGram").textContent = faGram(S.balance) + " GRAM";
+          $("wTotal").textContent = fa(S.totalEarned) + " امتیاز";
+          $("wUnsent").textContent = fa(pendingSync()) + " امتیاز";
+          var st = $("statTaps");
+          if (st) st.textContent = fa(S.taps);
+        }
+        function renderAll() {
+          renderHeader();
+          renderFarm();
+          renderWallet();
+          renderShop();
+          renderSpecial();
+          renderSheepStyle();
+          if (typeof updateSyncUI === "function") updateSyncUI();
+          if (typeof updateDailyUI === "function") updateDailyUI();
+          if (typeof updateWheelUI === "function") updateWheelUI();
+        }
+
+        /* ---------------- Sheep look: evolves with upgrades ----------------
+           Each purchase adds a permanent, cumulative accessory. The look is
+           rebuilt from the saved state on every render, so it survives
+           reloads exactly as bought. */
+        var SHEEP_ACCESSORIES = [
+          { id: "accFlower",    owned: function () { return S.farm.fodder > 0; } },
+          { id: "accBell",      owned: function () { return S.farm.cow2 > 0; } },
+          { id: "accCrown",     owned: function () { return S.farm.barn > 0; } },
+          { id: "accShades",    owned: function () { return S.farm.machine > 0; } },
+          { id: "accGoldSpark", owned: function () { return S.farm.goldcow > 0; } },
+          { id: "accHalo",      owned: function () { return S.special; } },
+          { id: "legendGlow",   owned: function () { return S.special; } }
+        ];
+        function sheepLevelName() {
+          if (S.special) return "گوسفند افسانه‌ای 🌟";
+          if (S.farm.goldcow > 0) return "گوسفند طلایی ✨";
+          if (S.farm.machine > 0) return "گوسفند ستاره 😎";
+          if (S.farm.barn > 0) return "گوسفند سلطنتی 👑";
+          if (S.farm.cow2 > 0) return "گوسفند نجیب 🔔";
+          if (S.farm.fodder > 0) return "گوسفند شیک 🌸";
+          return "گوسفند معمولی";
+        }
+        function renderSheepStyle() {
+          SHEEP_ACCESSORIES.forEach(function (a) {
+            var el = document.getElementById(a.id);
+            if (el) el.style.display = a.owned() ? "" : "none";
+          });
+          var gold = S.farm.goldcow > 0;
+          document.querySelectorAll(".wool-g").forEach(function (g) {
+            g.setAttribute("fill", gold ? "#f7c948" : "#f8f4ea");
+            g.setAttribute("stroke", gold ? "#dfa51f" : "#ddd3bf");
+          });
+          var lv = $("sheepLevel");
+          if (lv) lv.textContent = sheepLevelName();
+        }
+        function celebrate() {
+          if (!sceneWrap) return;
+          var chars = ["⭐", "✨", "💫", "🌟"];
+          for (var i = 0; i < 14; i++) {
+            var s = document.createElement("span");
+            s.className = "burst-star";
+            s.textContent = chars[i % chars.length];
+            var ang = (i / 14) * Math.PI * 2 + Math.random() * 0.4;
+            var dist = 70 + Math.random() * 65;
+            s.style.setProperty("--dx", Math.cos(ang) * dist + "px");
+            s.style.setProperty("--dy", Math.sin(ang) * dist + "px");
+            s.style.left = "57%";
+            s.style.top = "42%";
+            sceneWrap.appendChild(s);
+            (function (el) { setTimeout(function () { el.remove(); }, 1050); })(s);
+          }
+          blip(1320);
+        }
+
+        /* ---------------- Sheep tap / collect / boosts ---------------- */
+        function spawnPlus(x, y, txt) {
+          var s = document.createElement("span");
+          s.className = "float-plus";
+          s.textContent = txt;
+          s.style.left = x + "px";
+          s.style.top = y + "px";
+          sceneWrap.appendChild(s);
+          setTimeout(function () { s.remove(); }, 900);
+        }
+        cowTap.addEventListener("pointerdown", function (e) {
+          e.preventDefault();
+          // Taps are fully separate from timed production: no wool into the
+          // basket, no effect on the timer — just +1 point to the balance
+          // (and therefore to the unregistered points) per tap.
+          S.balance += TAP_POINTS;
+          S.totalEarned += TAP_POINTS;
+          S.taps++;
+          ensureDaily().taps++;
+          blip(620);
+          var r = sceneWrap.getBoundingClientRect();
+          var x = (e.clientX ? e.clientX - r.left : r.width / 2) + (Math.random() * 30 - 15);
+          var y = (e.clientY ? e.clientY - r.top : r.height / 2);
+          spawnPlus(Math.max(20, Math.min(r.width - 20, x)), Math.max(10, y - 6), "⭐ +" + fa(TAP_POINTS));
+          renderHeader();
+          renderWallet();
+          if (typeof updateSyncUI === "function") updateSyncUI();
+          updateDailyUI();
+        });
+        cowTap.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+
+        collectBtn.addEventListener("click", function () {
+          var pts = Math.floor(S.milk);
+          if (pts <= 0) { toast("هنوز پشمی تو سبد جمع نشده — روی گوسفند بزن تا پشم جمع بشه 🐑"); return; }
+          S.milk -= pts;
+          S.balance += pts;
+          S.totalEarned += pts;
+          blip(1040);
+          toast("🧶 " + fa(pts) + " پشم جمع شد و شد " + fa(pts) + " امتیاز!");
+          save();
+          renderAll();
+        });
+
+        function applyBoost(source) {
+          var added = Math.min(BOOST_MINUTES * prodRate(), MILK_CAP - S.milk);
+          S.milk += added;
+          var d = ensureDaily();
+          d.boostsUsed = 1;
+          if (source === "ad") d.farmBoosts = (d.farmBoosts || 0) + 1;
+          blip(980);
+          toast("⏩ شتاب +۱۰ دقیقه تولید: " + fa(Math.floor(added)) + " پشم ریخت تو سبد!");
+          save();
+          renderAll();
+        }
+        boostCloverBtn.addEventListener("click", function () {
+          if (S.clovers < 1) { toast("شبدر نداری — از گردونه شانس یا تسک «۳ تبلیغ» بگیر ☘️"); return; }
+          if (S.milk >= MILK_CAP) { toast("سبد پره! اول جمع‌آوری کن"); return; }
+          S.clovers--;
+          applyBoost("clover");
+        });
+
+        /* ---------------- Farm shop ---------------- */
+        var farmList = $("farmList");
+        function buildShop() {
+          farmList.innerHTML = "";
+          FARM.forEach(function (f) {
+            var row = document.createElement("div");
+            row.className = "item";
+            row.innerHTML =
+              '<div class="ic">' + f.icon + '</div>' +
+              '<div class="info"><div class="t">' + f.name + ' <span class="owned" data-owned="' + f.id + '"></span></div>' +
+              '<div class="d">' + f.desc + '</div>' +
+              '<div class="d">نرخ تولید فعلی: <b data-power-now>۱۲</b> پشم در دقیقه</div></div>' +
+              '<button class="buy-btn" type="button" data-buy-farm="' + f.id + '"></button>';
+            farmList.appendChild(row);
+          });
+          farmList.addEventListener("click", function (e) {
+            var b = e.target.closest("[data-buy-farm]");
+            if (b) buyFarm(b.getAttribute("data-buy-farm"));
+          });
+        }
+        function renderShop() {
+          if (!farmList) return;
+          var pw = fa(prodRate());
+          farmList.querySelectorAll("[data-power-now]").forEach(function (el) { el.textContent = pw; });
+          FARM.forEach(function (f) {
+            var ownedEl = farmList.querySelector('[data-owned="' + f.id + '"]');
+            var btn = farmList.querySelector('[data-buy-farm="' + f.id + '"]');
+            if (!ownedEl || !btn) return;
+            ownedEl.textContent = S.farm[f.id] > 0 ? "داری: " + fa(S.farm[f.id]) : "نداری";
+            var c = farmCost(f);
+            btn.innerHTML = "خرید<small>" + fa(c) + " امتیاز</small>";
+            btn.disabled = S.balance < c;
+          });
+        }
+        function buyFarm(id) {
+          var f = FARM.filter(function (x) { return x.id === id; })[0];
+          var c = farmCost(f);
+          if (S.balance < c) { toast("امتیازت کافی نیست!"); return; }
+          S.balance -= c;
+          S.farm[id]++;
+          ensureDaily().buys++;
+          blip(880);
+          toast(f.icon + " «" + f.name + "» خریده شد — نرخ تولیدت شد " + fa(prodRate()) + " پشم در دقیقه");
+          celebrate();
+          save();
+          renderAll();
+        }
+
+        /* ---------------- Special item (Telegram Stars / TON) ---------------- */
+        var specialWrap = $("specialWrap");
+        function buildSpecial() {
+          specialWrap.innerHTML =
+            '<div class="item special-item">' +
+              '<span class="special-badge">⭐ آیتم ویژه — پرداخت با Stars / TON</span>' +
+              '<div class="ic">' + SPECIAL.icon + '</div>' +
+              '<div class="info"><div class="t">' + SPECIAL.name + ' <span class="owned" id="specialOwned"></span></div>' +
+              '<div class="d">گوسفند ویژه مزرعه؛ نرخ تولید +' + fa(SPECIAL.power) + ' پشم در دقیقه و ظاهر افسانه‌ای با هاله نور. این آیتم با امتیاز خریده نمی‌شه؛ فقط با ستاره تلگرام یا TON.</div>' +
+              '<div class="d">نرخ تولید فعلی: <b id="specialPowerNow">۱۲</b> پشم در دقیقه</div></div>' +
+              '<div class="pay-col">' +
+                '<button class="pay-btn stars" type="button" id="buyStars">خرید با Stars<small>' + fa(SPECIAL.stars) + ' ستاره تلگرام</small></button>' +
+                '<button class="pay-btn ton" type="button" id="buyTon">خرید با TON<small>' + faNum(SPECIAL.ton) + ' TON</small></button>' +
+              '</div>' +
+            '</div>';
+          $("buyStars").addEventListener("click", function () { openPay("stars"); });
+          $("buyTon").addEventListener("click", function () { openPay("ton"); });
+          renderSpecial();
+        }
+        function renderSpecial() {
+          var o = $("specialOwned");
+          if (!o) return;
+          o.textContent = S.special ? "فعال است ✓" : "فعال نیست";
+          var pn = $("specialPowerNow");
+          if (pn) pn.textContent = fa(prodRate());
+          ["buyStars", "buyTon"].forEach(function (id) {
+            var b = $(id);
+            if (b) {
+              b.disabled = S.special;
+              if (S.special) b.innerHTML = "فعال شد ✓";
+            }
+          });
+        }
+        var payMethod = "stars";
+        function openPay(method) {
+          if (S.special) return;
+          payMethod = method;
+          $("payTitle").textContent = "خرید " + SPECIAL.name;
+          if (method === "stars") {
+            $("payPrice").textContent = fa(SPECIAL.stars) + " ⭐ ستاره تلگرام";
+            $("payDesc").textContent = "پرداخت با ستاره‌های تلگرام (Telegram Stars) — بدون نیاز به کیف پول.";
+          } else {
+            $("payPrice").textContent = faNum(SPECIAL.ton) + " TON";
+            $("payDesc").textContent = "پرداخت با TON از کیف پول تلگرامت (شبکه TON).";
+          }
+          $("payModal").hidden = false;
+        }
+        $("payClose").addEventListener("click", function () { $("payModal").hidden = true; });
+        $("payConfirm").addEventListener("click", function () {
+          $("payModal").hidden = true;
+          S.special = true;
+          blip(1180);
+          toast("🌟 «" + SPECIAL.name + "» فعال شد — نرخ تولیدت پرید بالا و گوسفندت افسانه‌ای شد!");
+          celebrate();
+          save();
+          renderSpecial();
+          renderAll();
+        });
+
+        /* ---------------- Watch ad (demo) — farm boost / wheel spin ---------------- */
+        var AD_SECONDS = 5;
+        var adTimer = null;
+        var adMode = "farmboost"; // "farmboost" -> +120 wool into the basket instantly, "wheel" -> +1 wheel spin
+        function startAd(mode) {
+          adMode = mode;
+          var modal = $("adModal"), claim = $("adClaim"), count = $("adCount"),
+              prog = $("adProg"), status = $("adStatus");
+          modal.hidden = false;
+          claim.disabled = true;
+          claim.textContent = mode === "wheel" ? "🎡 دریافت ۱ چرخش گردونه" : "🧶 دریافت +۱۰ دقیقه تولید";
+          var left = AD_SECONDS;
+          count.textContent = fa(left);
+          prog.style.width = "0%";
+          status.innerHTML = "در حال پخش تبلیغ… <b>" + fa(left) + "</b> ثانیه مونده";
+          clearInterval(adTimer);
+          adTimer = setInterval(function () {
+            left--;
+            prog.style.width = ((AD_SECONDS - left) / AD_SECONDS) * 100 + "%";
+            if (left <= 0) {
+              clearInterval(adTimer);
+              status.textContent = "تبلیغ تموم شد! جایزه‌ت آماده‌ست 👇";
+              claim.disabled = false;
+            } else {
+              status.innerHTML = "در حال پخش تبلیغ… <b>" + fa(left) + "</b> ثانیه مونده";
+            }
+          }, 1000);
+        }
+        boostAdBtn.addEventListener("click", function () {
+          var d = ensureDaily();
+          if ((d.farmBoosts || 0) >= AD_BOOST_DAILY_MAX) { toast("امروز ۹ بار از شتاب تبلیغی استفاده کردی — فردا دوباره ☘️"); return; }
+          if (S.milk >= MILK_CAP) { toast("سبد پره! اول جمع‌آوری کن"); return; }
+          startAd("farmboost");
+        });
+        $("adClose").addEventListener("click", function () {
+          clearInterval(adTimer);
+          $("adModal").hidden = true;
+        });
+        $("adClaim").addEventListener("click", function () {
+          $("adModal").hidden = true;
+          S.adsWatched++;
+          ensureDaily().ads++;
+          blip(1040);
+          if (adMode === "wheel") {
+            S.wheelSpins++;
+            toast("🎡 یه چرخش گردونه گرفتی! حالا دکمه «بچرخون» رو بزن");
+            save();
+            renderAll();
+          } else {
+            applyBoost("ad");
+          }
+        });
+
+        /* ---------------- Permanent tasks ---------------- */
+        var TASKS = [
+          { id: "channel", icon: "📣", name: "عضویت در کانال تلگرام بازی", reward: 1000, action: "عضویت در کانال",
+            desc: "تو کانال عضو شو تا از اخبار و ایردراپ‌های بازی جا نمونی.", url: "https://t.me/EbiPay_Official_Bot" },
+          { id: "insta1", icon: "📸", name: "فالو کردن اینستاگرام کامپیوتر هایور", reward: 750, action: "فالو کردن",
+            desc: "پیج فروشگاه (hiver.pc) رو تو اینستاگرام فالو کن.", url: "https://www.instagram.com/hiver.pc" },
+          { id: "insta2", icon: "🖥️", name: "فالو کردن پیج مانیتور کرمان", reward: 750, action: "فالو کردن",
+            desc: "پیج مانیتور کرمان (monitor_kerman_hiver) رو فالو کن.", url: "https://www.instagram.com/monitor_kerman_hiver" },
+          { id: "invite", icon: "👥", name: "لینک دعوتت رو برای یه دوست بفرست", reward: 500, action: "کپی لینک دعوت",
+            desc: "لینک دعوتت رو کپی کن و برای یه دوست بفرست.", copy: true }
+        ];
+        var taskList = $("taskList");
+        function renderTasks() {
+          taskList.innerHTML = "";
+          TASKS.forEach(function (t) {
+            var st = S.tasks[t.id] || 0;
+            var row = document.createElement("div");
+            row.className = "item";
+            var right;
+            if (st === 2) {
+              right = '<span class="task-done">✓ انجام شد</span>';
+            } else if (st === 1) {
+              right = '<button class="buy-btn" type="button" data-task-claim="' + t.id + '">🎁 دریافت جایزه<small>' + fa(t.reward) + ' امتیاز</small></button>';
+            } else if (t.copy) {
+              right = '<button class="buy-btn" type="button" data-task-act="' + t.id + '">' + t.action + '<small>جایزه: ' + fa(t.reward) + ' امتیاز</small></button>';
+            } else {
+              right = '<a class="buy-btn task-btn" href="' + t.url + '" target="_blank" rel="noopener" data-task-act="' + t.id + '">' + t.action + '<small>جایزه: ' + fa(t.reward) + ' امتیاز</small></a>';
+            }
+            row.innerHTML =
+              '<div class="ic">' + t.icon + '</div>' +
+              '<div class="info"><div class="t">' + t.name + '</div>' +
+              '<div class="d">' + t.desc + '</div></div>' + right;
+            taskList.appendChild(row);
+          });
+        }
+        taskList.addEventListener("click", function (e) {
+          var act = e.target.closest("[data-task-act]");
+          if (act) {
+            var t1 = TASKS.filter(function (x) { return x.id === act.getAttribute("data-task-act"); })[0];
+            if (t1.copy) { ensureDaily().shared = 1; copyText($("inviteCode").textContent.trim(), "لینک دعوت کپی شد 📋"); }
+            if (!S.tasks[t1.id]) S.tasks[t1.id] = 1;
+            save();
+            setTimeout(renderTasks, 60);
+            return;
+          }
+          var cl = e.target.closest("[data-task-claim]");
+          if (cl) {
+            var t2 = TASKS.filter(function (x) { return x.id === cl.getAttribute("data-task-claim"); })[0];
+            if (S.tasks[t2.id] !== 1) return;
+            S.tasks[t2.id] = 2;
+            S.balance += t2.reward;
+            S.totalEarned += t2.reward;
+            blip(1040);
+            toast("🎯 تسک «" + t2.name + "» انجام شد: +" + fa(t2.reward) + " امتیاز");
+            save();
+            renderTasks();
+            renderAll();
+          }
+        });
+
+        /* ---------------- Daily tasks (reset every calendar day) ---------------- */
+        var DAILY_TASKS = [
+          { id: "login",  icon: "🌅", name: "ورود روزانه به بازی",            reward: 500,  target: 1,   unit: "ورود",   prog: function (d) { return 1; }, desc: "فقط کافیه امروز وارد بازی شده باشی." },
+          { id: "taps100", icon: "👆", name: "۱۰۰ ضربه روی گوسفند",               reward: 300,  target: 100, unit: "ضربه",   prog: function (d) { return d.taps; }, desc: "امروز ۱۰۰ بار روی گوسفند بزن.", act: "gobarn", actLbl: "رفتن به طویله" },
+          { id: "taps500", icon: "🔥", name: "۵۰۰ ضربه روی گوسفند",               reward: 1000, target: 500, unit: "ضربه",   prog: function (d) { return d.taps; }, desc: "امروز ۵۰۰ بار روی گوسفند بزن.", act: "gobarn", actLbl: "رفتن به طویله" },
+          { id: "ad1",    icon: "📺", name: "تماشای ۱ تبلیغ",                  reward: 250,  target: 1,   unit: "تبلیغ",  prog: function (d) { return d.ads; }, desc: "امروز یه تبلیغ ببین (کارت شتاب تبلیغی یا تبلیغ گردونه).", act: "gobarn", actLbl: "رفتن به طویله" },
+          { id: "ad3",    icon: "🎬", name: "تماشای ۳ تبلیغ",                  reward: 1000, target: 3,   unit: "تبلیغ",  prog: function (d) { return d.ads; }, desc: "امروز ۳ تا تبلیغ ببین؛ جایزه‌اش ۱ شبدر ☘️ هم داره.", clover: 1, act: "gobarn", actLbl: "رفتن به طویله" },
+          { id: "buy1",   icon: "🏡", name: "خرید ۱ ارتقای مزرعه",             reward: 500,  target: 1,   unit: "خرید",   prog: function (d) { return d.buys; }, desc: "امروز یه ارتقا از فروشگاه مزرعه بخر.", act: "gobarn", actLbl: "رفتن به فروشگاه" },
+          { id: "boost",  icon: "⚡", name: "استفاده از کارت شتاب (+۱۰ دقیقه تولید)",  reward: 300,  target: 1,   unit: "شتاب",   prog: function (d) { return d.boostsUsed; }, desc: "امروز یه بار از کارت‌های شتاب (تبلیغ یا شبدر) استفاده کن.", act: "gobarn", actLbl: "رفتن به شتاب‌ها" },
+          { id: "sync",   icon: "🔄", name: "ثبت امتیاز در ربات (سینک)",        reward: 500,  target: 1,   unit: "ثبت",    prog: function (d) { return d.synced; }, desc: "امروز امتیازت رو با دکمه طلایی تو کیف پول تو ربات ثبت کن.", act: "gowallet", actLbl: "رفتن به کیف پول" },
+          { id: "share",  icon: "👥", name: "اشتراک‌گذاری لینک دعوت",           reward: 500,  target: 1,   unit: "اشتراک", prog: function (d) { return d.shared; }, desc: "لینک دعوتت رو کپی کن و برای دوستات بفرست.", act: "share", actLbl: "کپی لینک دعوت" },
+          { id: "wdvisit", icon: "👛", name: "بازدید تب کیف پول",              reward: 200,  target: 1,   unit: "بازدید", prog: function (d) { return d.wdVisit; }, desc: "امروز یه سر به تب کیف پول بزن.", act: "gowallet", actLbl: "رفتن به کیف پول" }
+        ];
+        var dailyTaskList = $("dailyTaskList");
+        function updateDailyUI() {
+          if (!dailyTaskList) return;
+          var d = ensureDaily();
+          var parts = [d.date, d.taps, d.ads, d.buys, d.boostsUsed, d.synced, d.shared, d.wdVisit];
+          DAILY_TASKS.forEach(function (t) { parts.push(d.claimed[t.id] ? 1 : 0); });
+          var key = parts.join("|");
+          if (key === lastDailyUiKey) return;
+          lastDailyUiKey = key;
+          var claimable = 0;
+          dailyTaskList.innerHTML = "";
+          DAILY_TASKS.forEach(function (t) {
+            var p = Math.min(t.prog(d), t.target);
+            var done = p >= t.target;
+            var claimed = !!d.claimed[t.id];
+            if (done && !claimed) claimable++;
+            var row = document.createElement("div");
+            row.className = "item";
+            var right;
+            if (claimed) {
+              right = '<span class="task-done">✓ گرفته شد</span>';
+            } else {
+              right = '<div class="task-actions">' +
+                '<button class="buy-btn" type="button" data-daily-claim="' + t.id + '"' + (done ? "" : " disabled") + '>🎁 دریافت جایزه<small>' + fa(t.reward) + ' امتیاز' + (t.clover ? ' + ۱ شبدر ☘️' : '') + '</small></button>' +
+                (t.act ? '<button class="act-btn" type="button" data-daily-act="' + t.id + '">' + t.actLbl + '</button>' : "") +
+                '</div>';
+            }
+            row.innerHTML =
+              '<div class="ic">' + t.icon + '</div>' +
+              '<div class="info"><div class="t">' + t.name + ' <span class="daily-badge">روزانه</span></div>' +
+              '<div class="d">' + t.desc + '</div>' +
+              '<div class="task-prog"><div class="bar"><i style="width:' + (t.target ? (p / t.target) * 100 : 100) + '%"></i></div>' +
+              '<span class="tp-txt' + (done ? " done" : "") + '">' + fa(p) + ' / ' + fa(t.target) + ' ' + t.unit + (done && !claimed ? " — کامل شد ✓" : "") + '</span></div></div>' + right;
+            dailyTaskList.appendChild(row);
+          });
+          var dot = $("earnDot");
+          if (dot) {
+            dot.hidden = claimable <= 0;
+            dot.textContent = fa(claimable);
+          }
+        }
+        if (dailyTaskList) {
+          dailyTaskList.addEventListener("click", function (e) {
+            var act = e.target.closest("[data-daily-act]");
+            if (act) {
+              var t1 = DAILY_TASKS.filter(function (x) { return x.id === act.getAttribute("data-daily-act"); })[0];
+              if (t1.act === "share") { ensureDaily().shared = 1; copyText($("inviteCode").textContent.trim(), "لینک دعوت کپی شد 📋"); }
+              else if (t1.act === "gowallet") switchTab("wallet");
+              else switchTab("barn");
+              lastDailyUiKey = "";
+              updateDailyUI();
+              return;
+            }
+            var cl = e.target.closest("[data-daily-claim]");
+            if (cl) {
+              var t2 = DAILY_TASKS.filter(function (x) { return x.id === cl.getAttribute("data-daily-claim"); })[0];
+              var d = ensureDaily();
+              if (d.claimed[t2.id] || t2.prog(d) < t2.target) return;
+              d.claimed[t2.id] = true;
+              S.balance += t2.reward;
+              S.totalEarned += t2.reward;
+              var extra = "";
+              if (t2.clover) { S.clovers += t2.clover; extra = " + " + fa(t2.clover) + " شبدر ☘️"; }
+              blip(1040);
+              toast("📅 تسک روزانه «" + t2.name + "» انجام شد: +" + fa(t2.reward) + " امتیاز" + extra);
+              lastDailyUiKey = "";
+              save();
+              updateDailyUI();
+              renderAll();
+            }
+          });
+        }
+
+        /* ---------------- Wheel of fortune ---------------- */
+        var WHEEL = [
+          { label: "۵۰۰",      sub: "امتیاز",              pts: 500,   w: 28, fill: "#f5b81d", tc: "#231a00" },
+          { label: "۰٫۰۱ تون", sub: "معادل ۱۶۰ امتیاز",     pts: 160,   w: 5,  fill: "#229ed6", tc: "#ffffff", cur: "۰٫۰۱ تون" },
+          { label: "۱٬۰۰۰",    sub: "امتیاز",              pts: 1000,  w: 24, fill: "#2e4a3a", tc: "#ffffff" },
+          { label: "☘️",       sub: "۱ شبدر",              pts: 0,     w: 9,  fill: "#57b25e", tc: "#ffffff", clover: 1 },
+          { label: "۲٬۵۰۰",    sub: "امتیاز",              pts: 2500,  w: 16, fill: "#e9a812", tc: "#231a00" },
+          { label: "۰٫۰۵ تتر", sub: "معادل ۵۰۰ امتیاز",     pts: 500,   w: 4,  fill: "#1e9e5a", tc: "#ffffff", cur: "۰٫۰۵ تتر" },
+          { label: "۵٬۰۰۰",    sub: "امتیاز",              pts: 5000,  w: 12, fill: "#476b52", tc: "#ffffff" },
+          { label: "جک‌پات",   sub: "۲۵٬۰۰۰ امتیاز",        pts: 25000, w: 2,  fill: "#d64545", tc: "#ffffff", jackpot: true }
+        ];
+        var wheelRot = 0, wheelSpinning = false;
+        var wheelSvg = $("wheelSvg"), spinBtn = $("spinBtn"), wheelResult = $("wheelResult");
+        function polar(cx, cy, r, deg) {
+          var rad = deg * Math.PI / 180;
+          return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+        }
+        function buildWheel() {
+          if (!wheelSvg) return;
+          var seg = 360 / WHEEL.length, cx = 150, cy = 150, r = 148;
+          var html = "";
+          WHEEL.forEach(function (s, i) {
+            var a0 = -90 + i * seg, a1 = a0 + seg;
+            var p0 = polar(cx, cy, r, a0), p1 = polar(cx, cy, r, a1);
+            html += '<path d="M' + cx + ' ' + cy + ' L' + p0[0].toFixed(1) + ' ' + p0[1].toFixed(1) +
+                    ' A' + r + ' ' + r + ' 0 0 1 ' + p1[0].toFixed(1) + ' ' + p1[1].toFixed(1) + ' Z" fill="' + s.fill +
+                    '" stroke="rgba(255,255,255,.55)" stroke-width="2"/>';
+          });
+          WHEEL.forEach(function (s, i) {
+            var mid = -90 + i * seg + seg / 2;
+            var tp = polar(cx, cy, 97, mid);
+            html += '<text x="' + tp[0].toFixed(1) + '" y="' + tp[1].toFixed(1) + '" fill="' + s.tc +
+                    '" font-family="Vazirmatn, sans-serif" font-weight="900" font-size="14.5" text-anchor="middle" dominant-baseline="middle" transform="rotate(' +
+                    (mid + 90).toFixed(1) + ' ' + tp[0].toFixed(1) + ' ' + tp[1].toFixed(1) + ')">' + s.label +
+                    '<tspan x="' + tp[0].toFixed(1) + '" dy="15" font-size="8.5" font-weight="700">' + s.sub + '</tspan></text>';
+          });
+          wheelSvg.innerHTML = html;
+          wheelSvg.style.transformOrigin = "center center";
+        }
+        function spinsLeft() {
+          var d = ensureDaily();
+          return (d.freeSpinUsed ? 0 : 1) + S.wheelSpins;
+        }
+        function updateWheelUI() {
+          var lbl = $("wheelSpinsLbl");
+          if (lbl) {
+            var d = ensureDaily();
+            lbl.innerHTML = "چرخش‌های باقی‌مانده: <b>" + fa(spinsLeft()) + "</b> — رایگان امروز: " +
+              (d.freeSpinUsed ? "استفاده شد" : "داری ✓") + " · چرخش از تبلیغ: " + fa(S.wheelSpins);
+          }
+          if (spinBtn) spinBtn.disabled = wheelSpinning || spinsLeft() <= 0;
+        }
+        function pickWheelSegment() {
+          var total = 0;
+          WHEEL.forEach(function (s) { total += s.w; });
+          var r = Math.random() * total;
+          for (var i = 0; i < WHEEL.length; i++) {
+            r -= WHEEL[i].w;
+            if (r < 0) return i;
+          }
+          return WHEEL.length - 1;
+        }
+        function spinWheel() {
+          if (wheelSpinning) return;
+          if (spinsLeft() <= 0) { toast("چرخشی نداری — «تبلیغ ببین و بچرخون» رو بزن"); return; }
+          var d = ensureDaily();
+          if (!d.freeSpinUsed) d.freeSpinUsed = true; else S.wheelSpins--;
+          wheelSpinning = true;
+          wheelResult.className = "wheel-result";
+          wheelResult.textContent = "";
+          updateWheelUI();
+          var idx = pickWheelSegment();
+          var seg = 360 / WHEEL.length;
+          var center = -90 + idx * seg + seg / 2;
+          var targetMod = ((-90 - center) % 360 + 360) % 360;
+          var curMod = ((wheelRot % 360) + 360) % 360;
+          var delta = ((targetMod - curMod) % 360 + 360) % 360;
+          wheelRot += 360 * 5 + delta;
+          var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          var dur = reduced ? 700 : 4800;
+          wheelSvg.style.transition = "transform " + dur + "ms cubic-bezier(.12,.75,.08,1)";
+          wheelSvg.style.transform = "rotate(" + wheelRot + "deg)";
+          blip(520);
+          setTimeout(function () {
+            var s = WHEEL[idx];
+            wheelSpinning = false;
+            if (s.clover) {
+              S.clovers += s.clover;
+              blip(1180);
+              wheelResult.innerHTML = "☘️ شبدر بردی! ۱ شبدر به حسابت اضافه شد — باهاش می‌تونی «+۱۰ دقیقه تولید» بگیری.";
+              toast("🎡 گردونه: +۱ شبدر ☘️");
+            } else {
+              S.balance += s.pts;
+              S.totalEarned += s.pts;
+              blip(s.jackpot ? 1400 : 1040);
+              if (s.cur) {
+                wheelResult.innerHTML = "🎉 بردی: " + s.cur + " — معادل " + fa(s.pts) + " امتیاز به موجودیت اضافه شد" +
+                  '<span class="cur-note">معادل امتیازی — موقع برداشت تون/تتر واقعی می‌گیری</span>';
+              } else if (s.jackpot) {
+                wheelResult.innerHTML = "🏆 جک‌پات! " + fa(s.pts) + " امتیاز بردی و به موجودیت اضافه شد!";
+              } else {
+                wheelResult.innerHTML = "🎉 بردی: " + fa(s.pts) + " امتیاز — به موجودیت اضافه شد!";
+              }
+              toast("🎡 گردونه: +" + fa(s.pts) + " امتیاز");
+            }
+            wheelResult.className = "wheel-result show";
+            save();
+            updateWheelUI();
+            renderAll();
+          }, dur + 80);
+        }
+        if (spinBtn) spinBtn.addEventListener("click", spinWheel);
+        var wheelAdBtn = $("wheelAdBtn");
+        if (wheelAdBtn) wheelAdBtn.addEventListener("click", function () { if (!wheelSpinning) startAd("wheel"); });
+
+        /* ---------------- Wallet packages (display) ---------------- */
+        function buildPackages() {
+          var grid = $("pkgGrid");
+          if (!grid) return;
+          grid.innerHTML = "";
+          PACKAGES.forEach(function (p) {
+            var card = document.createElement("div");
+            card.className = "pkg-card";
+            card.innerHTML =
+              '<div class="pkg-head"><span class="pkg-usd">$' + fa(p.usd) + ' <small>پکیج برداشت</small></span>' +
+              '<span class="pkg-cost">' + fa(p.cost) + ' امتیاز</span></div>' +
+              '<div class="pkg-pays">' +
+                '<div class="pkg-pay"><b>' + faNum(p.TON) + '</b><span>TON / Gram</span></div>' +
+                '<div class="pkg-pay"><b>' + fa(p.NOT) + '</b><span>NOT</span></div>' +
+                '<div class="pkg-pay"><b>' + faNum(p.USDT) + '</b><span>USDT · BEP20</span></div>' +
+              '</div>';
+            grid.appendChild(card);
+          });
+        }
+
+        /* ---------------- Invite copy ---------------- */
+        $("copyInvite").addEventListener("click", function () {
+          ensureDaily().shared = 1;
+          copyText($("inviteCode").textContent.trim(), "لینک دعوت کپی شد 📋");
+          save();
+          updateDailyUI();
+        });
+
+        /* ---------------- Tabs ---------------- */
+        var tabBtns = document.querySelectorAll(".tab-btn");
+        function switchTab(name) {
+          tabBtns.forEach(function (x) { x.classList.toggle("on", x.getAttribute("data-tab") === name); });
+          ["barn", "earn", "friends", "wallet"].forEach(function (t) {
+            $("panel-" + t).classList.toggle("on", t === name);
+          });
+          if (name === "wallet") { ensureDaily().wdVisit = 1; lastDailyUiKey = ""; updateDailyUI(); }
+          window.scrollTo({ top: 0 });
+        }
+        tabBtns.forEach(function (b) {
+          b.addEventListener("click", function () { switchTab(b.getAttribute("data-tab")); });
+        });
+
+        /* ---------------- Init + UI loop ---------------- */
+        load();
+        renderSoundBtn();
+        buildShop();
+        buildSpecial();
+        buildPackages();
+        buildWheel();
+        renderTasks();
+        ensureDaily();
+        renderAll();
+        updateDailyUI();
+        updateWheelUI();
+        save();
+        window.addEventListener("beforeunload", save);
+        document.addEventListener("visibilitychange", function () { if (document.hidden) save(); });
+
+        var saveTick = 0;
+        var lastProdTs = Date.now();
+        setInterval(function () {
+          // Timed production: driven by real elapsed time (timestamps), so
+          // it runs steadily at prodRate()/min and never depends on taps.
+          var now = Date.now();
+          var dt = Math.max(0, (now - lastProdTs) / 1000);
+          lastProdTs = now;
+          if (dt > 0 && S.milk < MILK_CAP) {
+            S.milk = Math.min(MILK_CAP, S.milk + prodRate() * dt / 60);
+          }
+          renderFarm();
+          ensureDaily();
+          renderHeader();
+          renderWallet();
+          updateSyncUI();
+          if (++saveTick >= 20) { saveTick = 0; save(); } // persist every ~5s
+        }, 250);
+      })();
+    </script>
+  </body>
+</html>
