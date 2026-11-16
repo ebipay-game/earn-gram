@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
     <script>
 /* Telegram Web App JS — inlined verbatim from https://telegram.org/js/telegram-web-app.js */
 // WebView
@@ -4564,6 +4565,12 @@
         <p class="section-sub">این تسک‌ها یک‌بار انجام می‌شن و همیشه همین‌جا می‌مونن. تو نسخه واقعی ربات، انجام تسک (مثلاً عضویت در کانال) خودکار بررسی می‌شه؛ اینجا بعد از انجام کار، دکمه «دریافت جایزه» رو بزن.</p>
         <div id="taskList"></div>
 
+        <div class="invite-card" style="margin-bottom:14px">
+          <h3>📺 تبلیغ ببین، امتیاز بگیر</h3>
+          <p>یه تبلیغ رو تا آخر ببین و <b>۵۰ امتیاز</b> بگیر. جایزه فقط وقتی داده می‌شه که تبلیغ کامل دیده بشه؛ اگه وسطش ببندیش، امتیازی تعلق نمی‌گیره.</p>
+          <button class="claim-btn" id="adPointsBtn" type="button" style="width:100%; margin-top:10px">📺 تماشای تبلیغ · +۵۰ امتیاز</button>
+        </div>
+
         <div class="wheel-card">
           <h3>🎡 گردونه شانس</h3>
           <p class="w-sub">هر روز ۱ چرخش رایگان داری؛ چرخش اضافه رو با تماشای تبلیغ بگیر. جایزه‌ها مستقیم می‌رن تو موجودیت؛ برای برداشت، از تب کیف پول دکمه «💸 برداشت» رو بزن. یه خانه ☘️ هم داره که شبدر می‌ده!</p>
@@ -4624,7 +4631,7 @@
 
         <div class="wallet-card">
           <h3>پکیج‌های برداشت</h3>
-          <p>برداشت فقط با پکیج‌های ثابت دلاری انجام می‌شه. TON و NOT روی شبکه TON هستن؛ USDT روی شبکه BEP20.</p>
+          <p>برداشت از داخل ربات انجام می‌شه: هم پکیج‌های دلاری هست، هم «برداشت کل موجودی» (حداقل ۱٬۰۰۰ امتیاز). TON و NOT روی شبکه TON هستن؛ USDT روی شبکه BEP20.</p>
           <div class="pkg-grid" id="pkgGrid" style="margin-top:12px"></div>
           <p style="margin-top:12px">📝 <b>برداشت نهایی داخل خود ربات انجام می‌شه:</b> دکمه «💸 برداشت» بالای همین تب رو بزن تا با موجودی فعلیت بری تو چت ربات Sheep؛ اونجا پکیج و آدرس کیف پولت رو ثبت کن تا بعد از تأیید مدیر واریز بشه.</p>
         </div>
@@ -4639,23 +4646,6 @@
         <button class="tab-btn" type="button" data-tab="wallet"><span class="tb-ic">👛</span>کیف پول</button>
       </div>
     </nav>
-
-    <!-- Ad modal (demo ad) -->
-    <div class="modal" id="adModal" hidden>
-      <div class="modal-box">
-        <div class="ad-screen">
-          <span class="ad-tag">تبلیغ نمایشی</span>
-          <div class="ad-creative">
-            <div class="big">📣</div>
-            <p>اینجا تبلیغ اسپانسر نمایش داده می‌شود</p>
-          </div>
-          <div class="ad-progress"><i id="adProg"></i></div>
-        </div>
-        <p id="adStatus">در حال پخش تبلیغ… <b id="adCount">۵</b> ثانیه مونده</p>
-        <button class="claim-btn" id="adClaim" type="button" disabled>🎁 دریافت جایزه</button>
-        <button class="modal-close" id="adClose" type="button">بستن</button>
-      </div>
-    </div>
 
     <!-- Payment modal (Telegram Stars / TON) — locked: real payment only -->
     <div class="modal" id="payModal" hidden>
@@ -5223,57 +5213,88 @@
           renderAll();
         });
 
-        /* ---------------- Watch ad (demo) — farm boost / wheel spin ---------------- */
-        var AD_SECONDS = 5;
-        var adTimer = null;
-        var adMode = "farmboost"; // "farmboost" -> +120 wool into the basket instantly, "wheel" -> +1 wheel spin
-        function startAd(mode) {
-          adMode = mode;
-          var modal = $("adModal"), claim = $("adClaim"), count = $("adCount"),
-              prog = $("adProg"), status = $("adStatus");
-          modal.hidden = false;
-          claim.disabled = true;
-          claim.textContent = mode === "wheel" ? "🎡 دریافت ۱ چرخش گردونه" : "🧶 دریافت +۱۰ دقیقه تولید";
-          var left = AD_SECONDS;
-          count.textContent = fa(left);
-          prog.style.width = "0%";
-          status.innerHTML = "در حال پخش تبلیغ… <b>" + fa(left) + "</b> ثانیه مونده";
-          clearInterval(adTimer);
-          adTimer = setInterval(function () {
-            left--;
-            prog.style.width = ((AD_SECONDS - left) / AD_SECONDS) * 100 + "%";
-            if (left <= 0) {
-              clearInterval(adTimer);
-              status.textContent = "تبلیغ تموم شد! جایزه‌ت آماده‌ست 👇";
-              claim.disabled = false;
-            } else {
-              status.innerHTML = "در حال پخش تبلیغ… <b>" + fa(left) + "</b> ثانیه مونده";
+        /* ---------------- AdsGram rewarded ads (Block 59992) ----------------
+           Real rewarded ads via the AdsGram SDK (loaded in <head>).
+           A reward is granted ONLY when show() resolves with done === true
+           (the ad was watched to the end). Closing early, no fill, an SDK
+           error, or the SDK failing to load grants nothing. */
+        var AD_POINTS_REWARD = 50; // direct watch-ad-for-points reward
+        var adsgramController = null;
+        function initAdsgram() {
+          if (adsgramController) return adsgramController;
+          try {
+            if (window.Adsgram && typeof window.Adsgram.init === "function") {
+              adsgramController = window.Adsgram.init({ blockId: "59992" });
             }
-          }, 1000);
+          } catch (e) { adsgramController = null; }
+          return adsgramController;
+        }
+        initAdsgram();
+        var adShowing = false;
+        function showRewardedAd() {
+          return new Promise(function (resolve) {
+            var ctrl = initAdsgram();
+            if (!ctrl || typeof ctrl.show !== "function") {
+              toast("الان تبلیغی در دسترس نیست، کمی بعد دوباره تلاش کن");
+              resolve(false);
+              return;
+            }
+            if (adShowing) { resolve(false); return; }
+            adShowing = true;
+            var shown;
+            try {
+              shown = ctrl.show();
+            } catch (e) {
+              adShowing = false;
+              toast("الان تبلیغی در دسترس نیست، کمی بعد دوباره تلاش کن");
+              resolve(false);
+              return;
+            }
+            Promise.resolve(shown).then(function (result) {
+              adShowing = false;
+              if (result && result.done === true) {
+                resolve(true);
+              } else {
+                toast("تبلیغ کامل دیده نشد — جایزه‌ای تعلق نگرفت");
+                resolve(false);
+              }
+            }).catch(function () {
+              adShowing = false;
+              toast("الان تبلیغی در دسترس نیست، کمی بعد دوباره تلاش کن");
+              resolve(false);
+            });
+          });
+        }
+        // Runs a rewarded ad; calls grant() only after a full watch.
+        // The triggering button stays disabled while the ad is up.
+        function runRewardedAd(btn, grant) {
+          if (btn) btn.disabled = true;
+          showRewardedAd().then(function (ok) {
+            if (ok) {
+              S.adsWatched++;
+              ensureDaily().ads++;
+              grant();
+            }
+            renderAll();
+            if (btn) btn.disabled = false;
+            renderAll();
+          });
         }
         boostAdBtn.addEventListener("click", function () {
           var d = ensureDaily();
           if ((d.farmBoosts || 0) >= AD_BOOST_DAILY_MAX) { toast("امروز ۹ بار از شتاب تبلیغی استفاده کردی — فردا دوباره ☘️"); return; }
           if (S.milk >= MILK_CAP) { toast("سبد پره! اول جمع‌آوری کن"); return; }
-          startAd("farmboost");
+          runRewardedAd(boostAdBtn, function () { applyBoost("ad"); });
         });
-        $("adClose").addEventListener("click", function () {
-          clearInterval(adTimer);
-          $("adModal").hidden = true;
-        });
-        $("adClaim").addEventListener("click", function () {
-          $("adModal").hidden = true;
-          S.adsWatched++;
-          ensureDaily().ads++;
-          blip(1040);
-          if (adMode === "wheel") {
-            S.wheelSpins++;
-            toast("🎡 یه چرخش گردونه گرفتی! حالا دکمه «بچرخون» رو بزن");
+        var adPointsBtn = $("adPointsBtn");
+        if (adPointsBtn) adPointsBtn.addEventListener("click", function () {
+          runRewardedAd(adPointsBtn, function () {
+            S.balance += AD_POINTS_REWARD;
+            S.totalEarned += AD_POINTS_REWARD;
+            blip(1040);
+            toast("📺 تبلیغ کامل دیده شد: +" + fa(AD_POINTS_REWARD) + " امتیاز");
             save();
-            renderAll();
-          } else {
-            applyBoost("ad");
-          }
+          });
         });
 
         /* ---------------- Permanent tasks ---------------- */
@@ -5535,7 +5556,15 @@
         }
         if (spinBtn) spinBtn.addEventListener("click", spinWheel);
         var wheelAdBtn = $("wheelAdBtn");
-        if (wheelAdBtn) wheelAdBtn.addEventListener("click", function () { if (!wheelSpinning) startAd("wheel"); });
+        if (wheelAdBtn) wheelAdBtn.addEventListener("click", function () {
+          if (wheelSpinning) return;
+          runRewardedAd(wheelAdBtn, function () {
+            S.wheelSpins++;
+            blip(1040);
+            toast("🎡 یه چرخش گردونه گرفتی! حالا دکمه «بچرخون» رو بزن");
+            save();
+          });
+        });
 
         /* ---------------- Wallet packages (display) ---------------- */
         function buildPackages() {
