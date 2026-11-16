@@ -3313,7 +3313,7 @@
       }
       WebView.postEvent('web_app_open_tg_link', false, req_params);
     } else {
-      location.href = 'https://t.me' + path_full;
+      window.location.assign('https://t.me' + path_full);
     }
   };
   WebApp.openInvoice = function (url, callback) {
@@ -4566,7 +4566,7 @@
 
         <div class="wheel-card">
           <h3>🎡 گردونه شانس</h3>
-          <p class="w-sub">هر روز ۱ چرخش رایگان داری؛ چرخش اضافه رو با تماشای تبلیغ بگیر. جایزه‌ها مستقیم می‌رن تو موجودیت و خودکار به ربات می‌رسن. یه خانه ☘️ هم داره که شبدر می‌ده!</p>
+          <p class="w-sub">هر روز ۱ چرخش رایگان داری؛ چرخش اضافه رو با تماشای تبلیغ بگیر. جایزه‌ها مستقیم می‌رن تو موجودیت؛ برای برداشت، از تب کیف پول دکمه «💸 برداشت» رو بزن. یه خانه ☘️ هم داره که شبدر می‌ده!</p>
           <div class="wheel-stage">
             <div class="wheel-pointer"></div>
             <svg id="wheelSvg" viewBox="0 0 300 300" role="img" aria-label="گردونه شانس"></svg>
@@ -4609,7 +4609,7 @@
       <!-- ===================== WALLET TAB ===================== -->
       <section class="tab-panel" id="panel-wallet">
         <h2 class="section-title">👛 کیف پول</h2>
-        <p class="section-sub">موجودی و ثبت امتیازت اینجاست. نرخ تبدیل: هر <b>۱۶٬۰۰۰ امتیاز = ۱ GRAM</b>.</p>
+        <p class="section-sub">موجودیت اینجاست. نرخ تبدیل: هر <b>۱۶٬۰۰۰ امتیاز = ۱ GRAM</b>.</p>
 
         <div class="wallet-card">
           <h3>موجودی مزرعه</h3>
@@ -4617,24 +4617,16 @@
             <div class="w-row"><span>موجودی امتیاز</span><b id="wBalance">۰ امتیاز</b></div>
             <div class="w-row"><span>معادل GRAM</span><b id="wGram">۰٫۰۰۰۰ GRAM</b></div>
             <div class="w-row"><span>مجموع کسب‌شده تا امروز</span><b id="wTotal">۰ امتیاز</b></div>
-            <div class="w-row"><span>امتیاز ثبت‌نشده در ربات</span><b id="wUnsent">۰ امتیاز</b></div>
           </div>
-        </div>
-
-        <div class="sync-card" id="syncCard">
-          <div class="sync-top">
-            <div class="sync-info">
-              <h3>🔄 سینک خودکار با حساب ربات</h3>
-              <p id="syncStatus">در حال بررسی اتصال به تلگرام…</p>
-            </div>
-          </div>
+          <button class="claim-btn" id="withdrawBtn" type="button" style="width:100%; margin-top:12px">💸 برداشت</button>
+          <p style="margin-top:10px">با زدن «برداشت» با موجودی فعلیت می‌ری توی چت ربات Sheep تا درخواست برداشتت رو اونجا ثبت کنی. موجودیت داخل بازی کم نمی‌شه؛ کسر نهایی فقط موقع تأیید برداشت داخل ربات انجام می‌شه.</p>
         </div>
 
         <div class="wallet-card">
           <h3>پکیج‌های برداشت</h3>
           <p>برداشت فقط با پکیج‌های ثابت دلاری انجام می‌شه. TON و NOT روی شبکه TON هستن؛ USDT روی شبکه BEP20.</p>
           <div class="pkg-grid" id="pkgGrid" style="margin-top:12px"></div>
-          <p style="margin-top:12px">📝 <b>برداشت نهایی داخل خود ربات انجام می‌شه:</b> امتیازها وقتی بازی رو داخل تلگرام باز می‌کنی، خودکار به ربات می‌رسن؛ بعد تو چت ربات Sheep از بخش برداشت، پکیج و آدرس کیف پولت رو ثبت کن تا بعد از تأیید مدیر واریز بشه.</p>
+          <p style="margin-top:12px">📝 <b>برداشت نهایی داخل خود ربات انجام می‌شه:</b> دکمه «💸 برداشت» بالای همین تب رو بزن تا با موجودی فعلیت بری تو چت ربات Sheep؛ اونجا پکیج و آدرس کیف پولت رو ثبت کن تا بعد از تأیید مدیر واریز بشه.</p>
         </div>
       </section>
     </main>
@@ -4665,14 +4657,14 @@
       </div>
     </div>
 
-    <!-- Payment modal (Telegram Stars / TON, demo) -->
+    <!-- Payment modal (Telegram Stars / TON) — locked: real payment only -->
     <div class="modal" id="payModal" hidden>
       <div class="modal-box">
         <h3 id="payTitle">خرید گوسفند افسانه‌ای</h3>
         <div class="pay-price" id="payPrice">۵۰ ⭐</div>
         <p id="payDesc">پرداخت با ستاره‌های تلگرام (Telegram Stars).</p>
-        <p>در نسخه واقعی ربات، پرداخت با فاکتور رسمی تلگرام یا اتصال کیف پول TON انجام می‌شه؛ اینجا پرداخت <b>نمایشی</b> است و بدون پرداخت واقعی، آیتم فعال می‌شه.</p>
-        <button class="claim-btn" id="payConfirm" type="button">پرداخت نمایشی و فعال‌سازی</button>
+        <p>🔒 این آیتم <b>قفل است</b> و فقط با <b>پرداخت واقعی</b> فعال می‌شه: با زدن دکمه زیر، درخواستت به ربات فرستاده می‌شه و ربات فاکتور رسمی پرداخت رو توی چت برات می‌فرسته. تا وقتی پرداخت واقعی انجام و از طرف ربات تأیید نشه، افسانه‌ای فعال نمی‌شه و نرخ تولیدت بالا نمی‌ره — فعال‌سازی رایگان نداره.</p>
+        <button class="claim-btn" id="payConfirm" type="button">درخواست فاکتور پرداخت واقعی از ربات 🔒</button>
         <button class="modal-close" id="payClose" type="button">انصراف</button>
       </div>
     </div>
@@ -4719,7 +4711,8 @@
           clovers: 0,
           milk: 0,          // float; 1 milk collected = 1 point
           farm: {},         // id -> owned count
-          special: false,   // گوسفند افسانه‌ای (Stars/TON item)
+          special: false,   // legacy flag — kept in sync with specialPaid on save
+          specialPaid: false, // گوسفند افسانه‌ای: true ONLY after a real, bot-verified payment
           tasks: {},        // permanent tasks: id -> 0/1/2
           wheelSpins: 0,    // extra wheel spins earned from ads
           adsWatched: 0,
@@ -4727,14 +4720,13 @@
           daily: null
         };
         FARM.forEach(function (f) { S.farm[f.id] = 0; });
-        var syncedBase = 0;   // balance value already submitted to the bot
-        var syncedTotal = 0;  // total points submitted during all sessions
+
 
         function farmCost(f) { return Math.ceil(f.baseCost * Math.pow(1.15, S.farm[f.id])); }
         function prodRate() {
           var r = BASE_RATE;
           FARM.forEach(function (f) { r += S.farm[f.id] * f.power; });
-          if (S.special) r += SPECIAL.power;
+          if (S.specialPaid) r += SPECIAL.power;
           return r;
         }
 
@@ -4748,10 +4740,9 @@
             localStorage.setItem(SAVE_KEY, JSON.stringify({
               v: 1, ts: Date.now(),
               balance: S.balance, totalEarned: S.totalEarned, taps: S.taps,
-              clovers: S.clovers, milk: S.milk, farm: S.farm, special: S.special,
+              clovers: S.clovers, milk: S.milk, farm: S.farm, special: S.specialPaid, specialPaid: S.specialPaid,
               tasks: S.tasks, wheelSpins: S.wheelSpins, adsWatched: S.adsWatched,
-              sound: S.sound, daily: S.daily,
-              syncedBase: syncedBase, syncedTotal: syncedTotal
+              sound: S.sound, daily: S.daily
             }));
           } catch (e) { /* storage may be unavailable; game still runs in-session */ }
         }
@@ -4768,14 +4759,18 @@
           if (typeof d.clovers === "number") S.clovers = d.clovers;
           if (typeof d.milk === "number") S.milk = Math.min(MILK_CAP, Math.max(0, d.milk));
           if (d.farm && typeof d.farm === "object") FARM.forEach(function (f) { if (typeof d.farm[f.id] === "number") S.farm[f.id] = d.farm[f.id]; });
-          S.special = !!d.special;
+          // Legendary sheep is paid-only: it counts ONLY when a real payment
+          // was verified (specialPaid === true). Every older save with
+          // special=true got it from the removed free/demo activation, so it
+          // is revoked here — the production rate drops back to the normal
+          // farm rate and the basket stops filling in ~2 minutes.
+          S.specialPaid = d.specialPaid === true;
+          S.special = S.specialPaid;
           if (d.tasks && typeof d.tasks === "object") S.tasks = d.tasks;
           if (typeof d.wheelSpins === "number") S.wheelSpins = d.wheelSpins;
           if (typeof d.adsWatched === "number") S.adsWatched = d.adsWatched;
           if (typeof d.sound === "boolean") S.sound = d.sound;
           if (d.daily && typeof d.daily === "object") S.daily = d.daily;
-          if (typeof d.syncedBase === "number") syncedBase = d.syncedBase;
-          if (typeof d.syncedTotal === "number") syncedTotal = d.syncedTotal;
           // Offline production: wool kept growing at the current rate while
           // the page was closed, based on the saved timestamp.
           if (typeof d.ts === "number" && d.ts > 0 && S.milk < MILK_CAP) {
@@ -4826,71 +4821,17 @@
           toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 2400);
         }
 
-        /* ---------------- Telegram sync (bot is the main bank) ----------------
-           Points reach the bot (@EbiPay_Official_Bot, runner.py) fully
-           automatically via Telegram WebApp sendData {"earned": N} — see
-           autoSendPoints below. There is no manual register button and
-           no pts_ deep link anymore. */
+        /* ---------------- Telegram context ----------------
+           The balance lives ONLY inside the game now: nothing is sent to
+           the bot automatically (no sendData sync, no timers, no
+           send-on-close). The only bridge to the bot is the manual
+           «💸 برداشت» button in the wallet tab, which opens the bot with
+           the current balance in its start parameter (wd_<balance>) and
+           does NOT deduct anything here. */
         var tg = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp : null;
         var inTelegram = !!(tg && tg.initData);
         var tgUser = (inTelegram && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user : null;
         if (tg) { try { tg.ready(); tg.expand(); } catch (e) { /* outside Telegram */ } }
-        function pendingSync() { return Math.max(0, Math.floor(S.balance) - syncedBase); }
-
-        var syncCard = $("syncCard"), syncStatus = $("syncStatus");
-        var lastSyncUiKey = "";
-        /* Automatic registration: while the game runs inside Telegram,
-           unregistered points are sent to the bot on their own — every
-           15 seconds whenever a pending amount exists, and again when
-           the page is hidden or closed. The payload is exactly
-           {"earned": <pending>} via Telegram.WebApp.sendData; only after
-           a successful send is the pending amount cleared and saved.
-           Outside Telegram (plain browser) nothing is sent, nothing
-           throws, and the game simply keeps working locally. */
-        function autoSendPoints() {
-          if (!inTelegram || !tg || typeof tg.sendData !== "function") return false;
-          var amt = pendingSync();
-          if (amt <= 0) return false;
-          try {
-            tg.sendData(JSON.stringify({ earned: amt }));
-          } catch (e) { return false; }
-          syncedBase = Math.floor(S.balance);
-          syncedTotal += amt;
-          try { ensureDaily().synced = 1; } catch (err) { /* daily is optional */ }
-          lastSyncUiKey = "";
-          save();
-          updateSyncUI();
-          if (typeof renderWallet === "function") renderWallet();
-          return true;
-        }
-        function updateSyncUI() {
-          if (!syncStatus) return;
-          var pending = pendingSync();
-          var key = (inTelegram ? "tg" : "web") + "|" + pending + "|" + syncedTotal;
-          if (key === lastSyncUiKey) return;
-          lastSyncUiKey = key;
-          if (!inTelegram) {
-            syncCard.classList.remove("connected");
-            syncStatus.innerHTML = "الان بازی تو مرورگر معمولی بازه و اتصال تلگرام نیست؛ امتیازها همین‌جا ذخیره می‌شن و از دست نمی‌رن. برای اینکه خودکار برن تو ربات <b>Sheep</b>، بازی رو از داخل خود ربات تلگرام باز کن." + (pending > 0 ? " الان <b>" + fa(pending) + " امتیاز</b> ثبت‌نشده داری." : "");
-            return;
-          }
-          syncCard.classList.add("connected");
-          var who = tgUser ? (tgUser.first_name || "بازیکن") : "بازیکن";
-          if (pending > 0) {
-            syncStatus.innerHTML = "✅ متصل به حساب تلگرام <b>" + who + "</b> — <b>" + fa(pending) + " امتیاز</b> آماده ارساله و <b>خودکار</b> به ربات فرستاده می‌شه؛ لازم نیست هیچ دکمه‌ای بزنی. موجودیت رو با دکمه «💰 موجودی» تو ربات می‌بینی.";
-          } else if (syncedTotal > 0) {
-            syncStatus.innerHTML = "✅ همه امتیازت خودکار به ربات ارسال شده (" + fa(syncedTotal) + " امتیاز). موجودی اصلیت رو با دکمه «💰 موجودی» تو چت ربات ببین.";
-          } else {
-            syncStatus.innerHTML = "✅ متصل به حساب تلگرام <b>" + who + "</b> — بانک اصلی امتیازت رباته. بازی کن؛ امتیازها خودکار و دوره‌ای به حسابت تو ربات می‌رن.";
-          }
-          try {
-            if (tg.MainButton) tg.MainButton.hide();
-            if (pending > 0 && tg.enableClosingConfirmation) tg.enableClosingConfirmation();
-            if (pending <= 0 && tg.disableClosingConfirmation) tg.disableClosingConfirmation();
-          } catch (e) { /* closing confirmation is optional */ }
-        }
-        /* Registration is fully automatic — see autoSendPoints above and
-           the 15s timer + hide/close hooks in the init section. */
         // Real invite link for this Telegram account (bot referral: ref_<user id>)
         (function () {
           var code = $("inviteCode");
@@ -4912,6 +4853,64 @@
             o.start(); o.stop(actx.currentTime + 0.1);
           } catch (e) { /* sound is optional */ }
         }
+        /* Sheep baa («به‌به») — fully synthesized with WebAudio, no audio
+           file: a ~400 Hz sawtooth with fast ~18 Hz amplitude tremolo and
+           a slight frequency vibrato, ~0.35 s, softened by a lowpass so it
+           reads as a bleat. Fresh nodes per call, so every tap restarts it. */
+        function baa() {
+          if (!S.sound) return;
+          try {
+            if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+            if (actx.state === "suspended") actx.resume();
+            var t = actx.currentTime, dur = 0.35;
+            var o = actx.createOscillator();
+            o.type = "sawtooth";
+            o.frequency.value = 400;
+            var vib = actx.createOscillator();
+            vib.type = "sine"; vib.frequency.value = 11;
+            var vibGain = actx.createGain(); vibGain.gain.value = 14;
+            vib.connect(vibGain); vibGain.connect(o.frequency);
+            var flt = actx.createBiquadFilter();
+            flt.type = "lowpass"; flt.frequency.value = 1300;
+            var g = actx.createGain();
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(0.15, t + 0.04);
+            g.gain.setValueAtTime(0.15, t + dur - 0.1);
+            g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+            var trem = actx.createOscillator();
+            trem.type = "sine"; trem.frequency.value = 18;
+            var tremGain = actx.createGain(); tremGain.gain.value = 0.065;
+            trem.connect(tremGain); tremGain.connect(g.gain);
+            o.connect(flt); flt.connect(g); g.connect(actx.destination);
+            o.start(t); vib.start(t); trem.start(t);
+            o.stop(t + dur); vib.stop(t + dur); trem.stop(t + dur);
+          } catch (e) { /* sound is optional */ }
+        }
+        /* Short cheerful welcome melody on entering the game (same
+           WebAudio blips). Browsers block audio before the first gesture,
+           so if the context is still suspended at load, the melody is
+           deferred to the first pointerdown anywhere on the page. */
+        var melodyDone = false;
+        function startMelody() {
+          if (melodyDone) return;
+          melodyDone = true;
+          var seq = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+          seq.forEach(function (fr, i) {
+            setTimeout(function () { blip(fr); }, i * 135);
+          });
+        }
+        function tryMelody() {
+          if (melodyDone || !S.sound) return;
+          try {
+            if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+            if (actx.state === "running") { startMelody(); return; }
+            var p = actx.resume();
+            if (p && typeof p.then === "function") {
+              p.then(function () { if (actx && actx.state === "running") startMelody(); });
+            }
+          } catch (e) { /* sound is optional */ }
+        }
+        document.addEventListener("pointerdown", function () { tryMelody(); });
         var soundBtn = $("soundBtn");
         function renderSoundBtn() { soundBtn.textContent = S.sound ? "🔊" : "🔇"; }
         soundBtn.addEventListener("click", function () {
@@ -4978,7 +4977,6 @@
           $("wBalance").textContent = fa(S.balance) + " امتیاز";
           $("wGram").textContent = faGram(S.balance) + " GRAM";
           $("wTotal").textContent = fa(S.totalEarned) + " امتیاز";
-          $("wUnsent").textContent = fa(pendingSync()) + " امتیاز";
           var st = $("statTaps");
           if (st) st.textContent = fa(S.taps);
         }
@@ -4989,7 +4987,6 @@
           renderShop();
           renderSpecial();
           renderSheepStyle();
-          if (typeof updateSyncUI === "function") updateSyncUI();
           if (typeof updateDailyUI === "function") updateDailyUI();
           if (typeof updateWheelUI === "function") updateWheelUI();
         }
@@ -5004,11 +5001,11 @@
           { id: "accCrown",     owned: function () { return S.farm.barn > 0; } },
           { id: "accShades",    owned: function () { return S.farm.machine > 0; } },
           { id: "accGoldSpark", owned: function () { return S.farm.goldcow > 0; } },
-          { id: "accHalo",      owned: function () { return S.special; } },
-          { id: "legendGlow",   owned: function () { return S.special; } }
+          { id: "accHalo",      owned: function () { return S.specialPaid; } },
+          { id: "legendGlow",   owned: function () { return S.specialPaid; } }
         ];
         function sheepLevelName() {
-          if (S.special) return "گوسفند افسانه‌ای 🌟";
+          if (S.specialPaid) return "گوسفند افسانه‌ای 🌟";
           if (S.farm.goldcow > 0) return "گوسفند طلایی ✨";
           if (S.farm.machine > 0) return "گوسفند ستاره 😎";
           if (S.farm.barn > 0) return "گوسفند سلطنتی 👑";
@@ -5067,14 +5064,13 @@
           S.totalEarned += TAP_POINTS;
           S.taps++;
           ensureDaily().taps++;
-          blip(620);
+          baa();
           var r = sceneWrap.getBoundingClientRect();
           var x = (e.clientX ? e.clientX - r.left : r.width / 2) + (Math.random() * 30 - 15);
           var y = (e.clientY ? e.clientY - r.top : r.height / 2);
           spawnPlus(Math.max(20, Math.min(r.width - 20, x)), Math.max(10, y - 6), "⭐ +" + fa(TAP_POINTS));
           renderHeader();
           renderWallet();
-          if (typeof updateSyncUI === "function") updateSyncUI();
           updateDailyUI();
         });
         cowTap.addEventListener("contextmenu", function (e) { e.preventDefault(); });
@@ -5162,14 +5158,14 @@
         function buildSpecial() {
           specialWrap.innerHTML =
             '<div class="item special-item">' +
-              '<span class="special-badge">⭐ آیتم ویژه — پرداخت با Stars / TON</span>' +
+              '<span class="special-badge">🔒 آیتم قفل‌شده — فقط با پرداخت واقعی</span>' +
               '<div class="ic">' + SPECIAL.icon + '</div>' +
               '<div class="info"><div class="t">' + SPECIAL.name + ' <span class="owned" id="specialOwned"></span></div>' +
-              '<div class="d">گوسفند ویژه مزرعه؛ نرخ تولید +' + fa(SPECIAL.power) + ' پشم در دقیقه و ظاهر افسانه‌ای با هاله نور. این آیتم با امتیاز خریده نمی‌شه؛ فقط با ستاره تلگرام یا TON.</div>' +
+              '<div class="d">گوسفند ویژه مزرعه؛ نرخ تولید +' + fa(SPECIAL.power) + ' پشم در دقیقه و ظاهر افسانه‌ای با هاله نور. این آیتم با امتیاز خریده نمی‌شه و رایگان هم فعال نمی‌شه؛ فقط با پرداخت واقعی ستاره تلگرام یا TON، بعد از تأیید ربات.</div>' +
               '<div class="d">نرخ تولید فعلی: <b id="specialPowerNow">۱۲</b> پشم در دقیقه</div></div>' +
               '<div class="pay-col">' +
-                '<button class="pay-btn stars" type="button" id="buyStars">خرید با Stars<small>' + fa(SPECIAL.stars) + ' ستاره تلگرام</small></button>' +
-                '<button class="pay-btn ton" type="button" id="buyTon">خرید با TON<small>' + faNum(SPECIAL.ton) + ' TON</small></button>' +
+                '<button class="pay-btn stars" type="button" id="buyStars">🔒 خرید با Stars<small>' + fa(SPECIAL.stars) + ' ستاره تلگرام</small></button>' +
+                '<button class="pay-btn ton" type="button" id="buyTon">🔒 خرید با TON<small>' + faNum(SPECIAL.ton) + ' TON</small></button>' +
               '</div>' +
             '</div>';
           $("buyStars").addEventListener("click", function () { openPay("stars"); });
@@ -5179,20 +5175,20 @@
         function renderSpecial() {
           var o = $("specialOwned");
           if (!o) return;
-          o.textContent = S.special ? "فعال است ✓" : "فعال نیست";
+          o.textContent = S.specialPaid ? "فعال است ✓" : "قفل است 🔒";
           var pn = $("specialPowerNow");
           if (pn) pn.textContent = fa(prodRate());
           ["buyStars", "buyTon"].forEach(function (id) {
             var b = $(id);
             if (b) {
-              b.disabled = S.special;
-              if (S.special) b.innerHTML = "فعال شد ✓";
+              b.disabled = S.specialPaid;
+              if (S.specialPaid) b.innerHTML = "فعال شد ✓";
             }
           });
         }
         var payMethod = "stars";
         function openPay(method) {
-          if (S.special) return;
+          if (S.specialPaid) return;
           payMethod = method;
           $("payTitle").textContent = "خرید " + SPECIAL.name;
           if (method === "stars") {
@@ -5206,11 +5202,22 @@
         }
         $("payClose").addEventListener("click", function () { $("payModal").hidden = true; });
         $("payConfirm").addEventListener("click", function () {
+          // NO free activation anymore: this button never unlocks the item.
+          // It only asks the bot for a real payment invoice (Telegram Stars /
+          // TON). The legendary sheep turns on solely when a real payment is
+          // verified by the bot (specialPaid) — until then it stays locked
+          // and the production rate stays at the normal farm rate.
           $("payModal").hidden = true;
-          S.special = true;
-          blip(1180);
-          toast("🌟 «" + SPECIAL.name + "» فعال شد — نرخ تولیدت پرید بالا و گوسفندت افسانه‌ای شد!");
-          celebrate();
+          if (inTelegram && tg && typeof tg.sendData === "function") {
+            try {
+              tg.sendData(JSON.stringify({ buy_special: payMethod, item: "legendary_sheep" }));
+              toast("🔒 درخواست پرداخت واقعی ارسال شد — فاکتور رو توی چت ربات پرداخت کن؛ افسانه‌ای فقط بعد از پرداخت و تأیید ربات فعال می‌شه.");
+            } catch (e) {
+              toast("🔒 افسانه‌ای قفله؛ برای پرداخت واقعی بازی رو از داخل ربات تلگرام باز کن و از اونجا فاکتور بگیر.");
+            }
+          } else {
+            toast("🔒 افسانه‌ای قفله و فقط با پرداخت واقعی فعال می‌شه — بازی رو از داخل ربات تلگرام باز کن تا فاکتور پرداخت بگیری.");
+          }
           save();
           renderSpecial();
           renderAll();
@@ -5338,7 +5345,7 @@
           { id: "ad3",    icon: "🎬", name: "تماشای ۳ تبلیغ",                  reward: 1000, target: 3,   unit: "تبلیغ",  prog: function (d) { return d.ads; }, desc: "امروز ۳ تا تبلیغ ببین؛ جایزه‌اش ۱ شبدر ☘️ هم داره.", clover: 1, act: "gobarn", actLbl: "رفتن به طویله" },
           { id: "buy1",   icon: "🏡", name: "خرید ۱ ارتقای مزرعه",             reward: 500,  target: 1,   unit: "خرید",   prog: function (d) { return d.buys; }, desc: "امروز یه ارتقا از فروشگاه مزرعه بخر.", act: "gobarn", actLbl: "رفتن به فروشگاه" },
           { id: "boost",  icon: "⚡", name: "استفاده از کارت شتاب (+۱۰ دقیقه تولید)",  reward: 300,  target: 1,   unit: "شتاب",   prog: function (d) { return d.boostsUsed; }, desc: "امروز یه بار از کارت‌های شتاب (تبلیغ یا شبدر) استفاده کن.", act: "gobarn", actLbl: "رفتن به شتاب‌ها" },
-          { id: "sync",   icon: "🔄", name: "ثبت امتیاز در ربات (سینک)",        reward: 500,  target: 1,   unit: "ثبت",    prog: function (d) { return d.synced; }, desc: "امروز وقتی بازی رو داخل تلگرام باز کردی، امتیازت خودکار تو ربات ثبت می‌شه.", act: "gowallet", actLbl: "رفتن به کیف پول" },
+          { id: "sync",   icon: "💸", name: "سر زدن به برداشت",                  reward: 500,  target: 1,   unit: "برداشت", prog: function (d) { return d.synced; }, desc: "امروز دکمه «💸 برداشت» رو تو تب کیف پول بزن تا با موجودیت بری تو ربات.", act: "gowallet", actLbl: "رفتن به کیف پول" },
           { id: "share",  icon: "👥", name: "اشتراک‌گذاری لینک دعوت",           reward: 500,  target: 1,   unit: "اشتراک", prog: function (d) { return d.shared; }, desc: "لینک دعوتت رو کپی کن و برای دوستات بفرست.", act: "share", actLbl: "کپی لینک دعوت" },
           { id: "wdvisit", icon: "👛", name: "بازدید تب کیف پول",              reward: 200,  target: 1,   unit: "بازدید", prog: function (d) { return d.wdVisit; }, desc: "امروز یه سر به تب کیف پول بزن.", act: "gowallet", actLbl: "رفتن به کیف پول" }
         ];
@@ -5550,6 +5557,27 @@
           });
         }
 
+        /* ---------------- Withdraw (manual bridge to the bot) ----------------
+           Opens the bot with the CURRENT balance in the start parameter:
+           https://t.me/EbiPay_Official_Bot?start=wd_<balance>
+           The balance is NOT deducted here — the deduction happens only
+           inside the bot when the withdrawal is confirmed there. */
+        var withdrawBtn = $("withdrawBtn");
+        if (withdrawBtn) withdrawBtn.addEventListener("click", function () {
+          var bal = Math.max(0, Math.floor(S.balance));
+          if (bal <= 0) { toast("موجودیت صفره — اول بازی کن و امتیاز جمع کن 🐑"); return; }
+          ensureDaily().synced = 1; // completes today's «سر زدن به برداشت» daily task
+          lastDailyUiKey = "";
+          var url = "https://t.me/EbiPay_Official_Bot?start=wd_" + bal;
+          toast("💸 داری با موجودی " + fa(bal) + " امتیاز می‌ری تو ربات — موجودیت اینجا کم نشده؛ برداشت رو اونجا کامل کن.");
+          save();
+          updateDailyUI();
+          if (tg && typeof tg.openTelegramLink === "function") {
+            try { tg.openTelegramLink(url); return; } catch (e) { /* fall through to window.open */ }
+          }
+          window.open(url, "_blank", "noopener");
+        });
+
         /* ---------------- Invite copy ---------------- */
         $("copyInvite").addEventListener("click", function () {
           ensureDaily().shared = 1;
@@ -5585,12 +5613,10 @@
         updateDailyUI();
         updateWheelUI();
         save();
-        window.addEventListener("beforeunload", function () { autoSendPoints(); save(); });
-        window.addEventListener("pagehide", function () { autoSendPoints(); save(); });
-        document.addEventListener("visibilitychange", function () { if (document.hidden) { autoSendPoints(); save(); } });
-        // Automatic registration: every 15 seconds, send any unregistered
-        // points to the bot (no-op outside Telegram or when pending is 0).
-        setInterval(autoSendPoints, 15000);
+        tryMelody(); // welcome melody now, or on first tap if autoplay is blocked
+        window.addEventListener("beforeunload", function () { save(); });
+        window.addEventListener("pagehide", function () { save(); });
+        document.addEventListener("visibilitychange", function () { if (document.hidden) { save(); } });
 
         var saveTick = 0;
         var lastProdTs = Date.now();
@@ -5607,7 +5633,6 @@
           ensureDaily();
           renderHeader();
           renderWallet();
-          updateSyncUI();
           if (++saveTick >= 20) { saveTick = 0; save(); } // persist every ~5s
         }, 250);
       })();
